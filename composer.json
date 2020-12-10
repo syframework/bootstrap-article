@@ -1,0 +1,21 @@
+{
+	"name": "sy/bootstrap-article",
+	"description": "Plugin for adding Article feature",
+	"type": "library",
+	"require": {
+		"php": ">=7",
+		"sy/bootstrap": "^1.0"
+	},
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "Syone",
+			"email": "syone7@gmail.com"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Sy\\Bootstrap\\": "src/"
+		}
+	}
+}

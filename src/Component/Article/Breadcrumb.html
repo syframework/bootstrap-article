@@ -1,0 +1,15 @@
+<nav class="small">
+	<ol class="breadcrumb" itemscope itemtype="http://schema.org/BreadcrumbList">
+		<li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+			<a itemprop="item" href="{ALL_ARTICLES_URL}"><span itemprop="name">{"All articles"}</span></a>
+			<meta itemprop="position" content="1" />
+		</li>
+		<!-- BEGIN CATEGORY_BLOCK -->
+		<li class="breadcrumb-item" itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+			<a itemprop="item" href="{CATEGORY_URL}"><span itemprop="name">{CATEGORY_NAME}</span></a>
+			<meta itemprop="position" content="{POSITION}" />
+		</li>
+		<!-- END CATEGORY_BLOCK -->
+		<li class="breadcrumb-item active">{TITLE}</li>
+	</ol>
+</nav>

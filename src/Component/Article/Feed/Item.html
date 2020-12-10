@@ -1,0 +1,22 @@
+<a class="item" href="{LINK}" data-id="{ID}">
+	<div class="card mb-3 bg-light">
+		<!-- BEGIN IMG_BLOCK -->
+		<img class="card-img-top" src="{IMG}" alt="{TITLE}" />
+		<!-- END IMG_BLOCK -->
+		<div class="card-body">
+			<h2 class="h3 card-title">{TITLE}</h2>
+			<p class="card-text">
+				<span class="badge badge-primary">{CATEGORY}</span>
+				<!-- BEGIN DRAFT_BLOCK --><span class="badge badge-secondary">{"Draft"}</span><!-- END DRAFT_BLOCK -->
+			</p>
+			<p class="card-text">{DESCRIPTION}</p>
+			<div class="text-muted">
+				<small class="d-inline-block mr-3"><span class="far fa-user"></span> {AUTHOR}</small>
+				<small class="d-inline-block mr-3"><span class="far fa-clock"></span> <span class="date" data-date="{DATETIME}">{DATE}</span></small>
+				<!-- BEGIN NB_MESSAGE_BLOCK -->
+				<small class="d-inline-block"><span class="far fa-comments"></span> {NB_MESSAGE}</small>
+				<!-- END NB_MESSAGE_BLOCK -->
+			</div>
+		</div>
+	</div>
+</a>

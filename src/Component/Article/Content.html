@@ -1,0 +1,85 @@
+<div id="article-toolbar" class="sticky">
+	<div class="position-absolute">
+		<!-- BEGIN UPDATE_BTN_BLOCK -->
+		<div>
+			<button id="btn-article-update-start" class="btn btn-primary rounded rounded-circle mb-1" title="{'Start editing article'}" data-title="{'Start editing article'}" data-placement="left" data-container="body" data-trigger="hover">
+				<span class="fas fa-pencil-alt" data-fa-transform="grow-5"></span>
+			</button>
+		</div>
+		<div>
+			<button id="btn-article-update-stop" class="btn btn-primary rounded rounded-circle mb-1 d-none" title="{'Finish editing article'}" data-title="{'Finish editing article'}" data-placement="left" data-container="body" data-trigger="hover">
+				<span class="fas fa-check" data-fa-transform="grow-5"></span>
+			</button>
+		</div>
+		<div>
+			<button class="btn btn-primary rounded rounded-circle mb-1" data-toggle="modal" data-target="#update-article-modal" title="{'Article settings'}" data-title="{'Article settings'}" data-placement="left" data-container="body" data-trigger="hover">
+				<span class="fas fa-cog" data-fa-transform="grow-5"></span>
+			</button>
+		</div>
+		<!-- END UPDATE_BTN_BLOCK -->
+		<!-- BEGIN DELETE_BTN_BLOCK -->
+		<div>
+			<button id="btn-article-delete" class="btn btn-primary rounded rounded-circle" title="{'Delete article'}" data-title="{'Delete article'}" data-placement="left" data-container="body" data-trigger="hover">
+				<span class="fas fa-trash" data-fa-transform="grow-5"></span>
+			</button>
+			<div hidden>{DELETE_ARTICLE_FORM}</div>
+		</div>
+		<!-- END DELETE_BTN_BLOCK -->
+	</div>
+</div>
+<div id="article-content">
+	{CONTENT}
+</div>
+
+<small class="text-secondary d-inline-block mb-3">
+	{"Published"} <span class="date" data-date="{PTIMESTAMP}">{PHUMANDATE}</span> {"by"} <a class="text-muted" href="{AUTHOR_URL}">{AUTHOR}</a>.
+	{"Updated"} <span class="date" data-date="{UTIMESTAMP}">{UHUMANDATE}</span>.
+</small>
+
+<!-- BEGIN UPDATE_MODAL_BLOCK -->
+<div class="modal fade" id="update-article-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">{"Article settings"}</h4>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<div class="modal-body">
+				{UPDATE_ARTICLE_FORM}
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END UPDATE_MODAL_BLOCK -->
+
+<script type="application/ld+json">
+{
+	"@context": "http://schema.org",
+	"@type": "NewsArticle",
+	"mainEntityOfPage": {
+		"@type": "WebPage",
+		"@id": "{PROJECT_URL}{ARTICLE_PAGE}"
+	},
+	"headline": "{TITLE}",
+	<!-- BEGIN IMAGE_BLOCK -->
+	"image": [
+		"{IMAGE}"
+	],
+	<!-- END IMAGE_BLOCK -->
+	"datePublished": "{PUBLISHED_AT}",
+	"dateModified": "{UPDATED_AT} ",
+	"author": {
+		"@type": "Person",
+		"name": "{AUTHOR}"
+	},
+	"publisher": {
+		"@type": "Organization",
+		"name": "{PROJECT}",
+		"logo": {
+			"@type": "ImageObject",
+			"url": "{PROJECT_URL}/assets/img/logo-rectangle.png"
+		}
+	},
+	"description": "{DESCRIPTION}"
+}
+</script>

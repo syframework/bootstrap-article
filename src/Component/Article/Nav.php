@@ -21,7 +21,7 @@ class Nav extends \Sy\Component\Html\Navigation {
 	}
 
 	private function init() {
-		$this->addTranslator(LANG_DIR);
+		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 		$service = \Project\Service\Container::getInstance();
 
 		$categories = $service->articleCategory->retrieveAll(['WHERE' => ['parent' => null]]);

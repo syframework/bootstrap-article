@@ -20,7 +20,7 @@ class Page extends \Sy\Component\WebComponent {
 	}
 
 	private function init() {
-		$this->addTranslator(LANG_DIR);
+		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 		$this->setTemplateFile(__DIR__ . '/Page.html');
 
 		if (is_null($this->page)) {

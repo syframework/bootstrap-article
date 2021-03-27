@@ -1,0 +1,61 @@
+<button style="top: 80px; margin-left:-10px; margin-top:-65px; padding-right: 5px; opacity:0.9; z-index: 1000" class="sticky btn btn-primary float-left d-block d-md-none" data-toggle="offcanvas" type="button"><span class="fa fa-chevron-right"></span></button>
+
+<div class="jumbotron jumbotron-fluid">
+	<div class="container">
+		<div class="row">
+			<div class="col">
+				<h1>
+					<span class="fas fa-newspaper"></span> <span data-var="Articles">{"Articles"}</span>
+					<br />
+					<small data-var="Articles description">
+						{"Articles description"}
+					</small>
+				</h1>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-3 offcanvas-container">
+			<div class="offcanvas-left h-100">
+				<div data-component="NAV" class="mb-2">
+					{NAV}
+				</div>
+				<div class="sticky" style="top:75px">
+					<div data-component="ADS_1" class="mb-2">
+						{ADS_1}
+					</div>
+				</div>
+			</div>
+			<div class="offcanvas-right"></div>
+		</div>
+
+		<div class="col-md-9">
+			<div class="row">
+				<div class="col-md-4 order-md-last">
+					<div class="sticky" style="top:75px">
+						<div data-component="SEARCH_FORM">
+							{SEARCH_FORM}
+						</div>
+
+						<div class="mb-2" data-component="ADD_FORM">
+							{ADD_FORM}
+						</div>
+
+						<div class="mb-2" data-component="ADS_2">
+							{ADS_2}
+						</div>
+					</div>
+				</div>
+
+				<div class="col-md-8 order-md-first">
+					<div data-component="FEED">
+						{FEED}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

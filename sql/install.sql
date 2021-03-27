@@ -82,4 +82,18 @@ INSERT INTO `t_user_role_has_permission` VALUES ('super-admin', 'article-read');
 INSERT INTO `t_user_role_has_permission` VALUES ('super-admin', 'article-status');
 INSERT INTO `t_user_role_has_permission` VALUES ('super-admin', 'article-update');
 
+-- ----------------------------
+-- Records of t_page
+-- ----------------------------
+INSERT INTO `t_page` (id, lang, title) VALUES ('article', 'en', 'Article');
+INSERT INTO `t_page` (id, lang, title) VALUES ('article', 'fr', 'Article');
+INSERT INTO `t_page` (id, lang, title) VALUES ('articles', 'en', 'Articles');
+INSERT INTO `t_page` (id, lang, title) VALUES ('articles', 'fr', 'Articles');
+
+-- ----------------------------
+-- View structure for v_article
+-- ----------------------------
+DROP VIEW IF EXISTS `v_article`;
+CREATE VIEW `v_article` AS select `t_article`.`id` AS `id`,`t_article`.`lang` AS `lang`,`t_article`.`user_id` AS `user_id`,`t_article`.`title` AS `title`,`t_article`.`description` AS `description`,`t_article`.`category_id` AS `category_id`,`t_article`.`content` AS `content`,`t_article`.`alias` AS `alias`,`t_article`.`status` AS `status`,`t_article`.`created_at` AS `created_at`,`t_article`.`updated_at` AS `updated_at`,`t_article`.`published_at` AS `published_at`,`user`.`firstname` AS `user_firstname`,`user`.`lastname` AS `user_lastname`,`category`.`name` AS `category` from ((`t_article` left join `t_user` `user` on((`t_article`.`user_id` = `user`.`id`))) left join `t_article_category` `category` on((`t_article`.`category_id` = `category`.`id`))) ;
+
 SET FOREIGN_KEY_CHECKS=1;

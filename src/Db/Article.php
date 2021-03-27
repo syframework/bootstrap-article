@@ -45,26 +45,18 @@ class Article extends Crud {
 		}
 		$sql = new Sql("
 			SELECT
-				article.*,
-				COUNT(message.id) AS nb_message
-			FROM (
-				SELECT
-					t_article.*,
-					user.firstname AS user_firstname,
-					user.lastname AS user_lastname,
-					category.name AS category
-				FROM t_article
-				LEFT JOIN t_user user ON t_article.user_id = user.id
-				LEFT JOIN t_article_category category ON t_article.category_id = category.id
-				WHERE t_article.status <> 'draft'
-					AND t_article.id <> :article_id
-					$where
-				ORDER BY published_at DESC
-				LIMIT 3
-			) AS article
-			LEFT JOIN v_message_received message ON message.item_id = article.id AND message.item_type = 'article'
-			GROUP BY article.id, article.lang
+				t_article.*,
+				user.firstname AS user_firstname,
+				user.lastname AS user_lastname,
+				category.name AS category
+			FROM t_article
+			LEFT JOIN t_user user ON t_article.user_id = user.id
+			LEFT JOIN t_article_category category ON t_article.category_id = category.id
+			WHERE t_article.status <> 'draft'
+				AND t_article.id <> :article_id
+				$where
 			ORDER BY published_at DESC
+			LIMIT 3
 		", $params);
 		return $this->queryAll($sql, \PDO::FETCH_ASSOC);
 	}
@@ -94,26 +86,18 @@ class Article extends Crud {
 		$select = empty($parameters['q']) ? '' : 'MATCH(t_article.title, t_article.description) AGAINST(:q IN BOOLEAN MODE) AS matching,';
 		$sql = new Sql("
 			SELECT
+				$select
+				t_article.published_at AS at,
 				t_article.*,
-				COUNT(message.id) AS nb_message
-			FROM (
-				SELECT
-					$select
-					t_article.published_at AS at,
-					t_article.*,
-					user.firstname AS user_firstname,
-					user.lastname AS user_lastname,
-					category.name AS category
-				FROM t_article
-				LEFT JOIN t_user user ON t_article.user_id = user.id
-				LEFT JOIN t_article_category category ON t_article.category_id = category.id
-				$where
-				ORDER BY $order
-				LIMIT 10 OFFSET $offset
-			) AS t_article
-			LEFT JOIN v_message_received message ON message.item_id = t_article.id AND message.item_type = 'article'
-			GROUP BY t_article.id, t_article.lang
-			ORDER BY 1 DESC
+				user.firstname AS user_firstname,
+				user.lastname AS user_lastname,
+				category.name AS category
+			FROM t_article
+			LEFT JOIN t_user user ON t_article.user_id = user.id
+			LEFT JOIN t_article_category category ON t_article.category_id = category.id
+			$where
+			ORDER BY $order
+			LIMIT 10 OFFSET $offset
 		", $params);
 		$res = $this->queryAll($sql, \PDO::FETCH_ASSOC);
 		$this->setCache($key, $res);

@@ -37,7 +37,7 @@ class Content extends \Sy\Component\WebComponent {
 	}
 
 	private function init() {
-		$this->addTranslator(LANG_DIR);
+		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 
 		// Template
 		$this->setTemplateFile(__DIR__ . '/Content.html');

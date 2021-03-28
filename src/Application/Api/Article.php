@@ -20,7 +20,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 		}
 	}
 
-	public function get() {
+	public function getAction() {
 		try {
 			// Retrieve page
 			$id   = $this->get('id');
@@ -42,7 +42,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 		}
 	}
 
-	public function post() {
+	public function postAction() {
 		$service = Container::getInstance();
 		try {
 			// Update page

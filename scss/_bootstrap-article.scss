@@ -20,3 +20,23 @@
 		right: 0;
 	}
 }
+
+// Item
+a.item {
+	color: inherit;
+
+	&:link {
+		text-decoration: none;
+	}
+
+	.card {
+		&:hover {
+			color: inherit;
+			border-color: $primary;
+		}
+	}
+
+	&:focus {
+		color: inherit;
+	}
+}

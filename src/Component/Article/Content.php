@@ -106,7 +106,6 @@ class Content extends \Sy\Component\WebComponent {
 			'PTIMESTAMP'   => $publishedAt->timestamp(),
 			'UHUMANDATE'   => $updatedAt->humanTimeDiff(),
 			'UTIMESTAMP'   => $updatedAt->timestamp(),
-			'AUTHOR_URL'   => \Sy\Bootstrap\Lib\Url::build('page', 'user', ['id' => $article['user_id']]),
 		]);
 
 		// Update

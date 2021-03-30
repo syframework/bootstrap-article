@@ -1,25 +1,25 @@
-<div id="article-toolbar" class="sticky">
+<div id="article-toolbar" class="position-sticky">
 	<div class="position-absolute">
 		<!-- BEGIN UPDATE_BTN_BLOCK -->
 		<div>
-			<button id="btn-article-update-start" class="btn btn-primary rounded rounded-circle mb-1" title="{'Start editing article'}" data-title="{'Start editing article'}" data-placement="left" data-container="body" data-trigger="hover">
+			<button id="btn-article-update-start" class="btn btn-primary btn-circle mb-1" title="{'Start editing article'}" data-title="{'Start editing article'}" data-bs-placement="left" data-bs-container="body" data-bs-trigger="hover">
 				<span class="fas fa-pencil-alt" data-fa-transform="grow-5"></span>
 			</button>
 		</div>
 		<div>
-			<button id="btn-article-update-stop" class="btn btn-primary rounded rounded-circle mb-1 d-none" title="{'Finish editing article'}" data-title="{'Finish editing article'}" data-placement="left" data-container="body" data-trigger="hover">
+			<button id="btn-article-update-stop" class="btn btn-primary btn-circle mb-1 d-none" title="{'Finish editing article'}" data-title="{'Finish editing article'}" data-bs-placement="left" data-bs-container="body" data-bs-trigger="hover">
 				<span class="fas fa-check" data-fa-transform="grow-5"></span>
 			</button>
 		</div>
 		<div>
-			<button class="btn btn-primary rounded rounded-circle mb-1" data-toggle="modal" data-target="#update-article-modal" title="{'Article settings'}" data-title="{'Article settings'}" data-placement="left" data-container="body" data-trigger="hover">
+			<button class="btn btn-primary btn-circle mb-1" data-bs-toggle="modal" data-bs-target="#update-article-modal" title="{'Article settings'}" data-title="{'Article settings'}" data-placement="left" data-container="body" data-trigger="hover">
 				<span class="fas fa-cog" data-fa-transform="grow-5"></span>
 			</button>
 		</div>
 		<!-- END UPDATE_BTN_BLOCK -->
 		<!-- BEGIN DELETE_BTN_BLOCK -->
 		<div>
-			<button id="btn-article-delete" class="btn btn-primary rounded rounded-circle" title="{'Delete article'}" data-title="{'Delete article'}" data-placement="left" data-container="body" data-trigger="hover">
+			<button id="btn-article-delete" class="btn btn-primary btn-circle" title="{'Delete article'}" data-title="{'Delete article'}" data-placement="left" data-container="body" data-trigger="hover">
 				<span class="fas fa-trash" data-fa-transform="grow-5"></span>
 			</button>
 			<div hidden>{DELETE_ARTICLE_FORM}</div>
@@ -42,7 +42,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title">{"Article settings"}</h4>
-				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<button type="button" class="btn-close" data-bs-dismiss="modal">&times;</button>
 			</div>
 			<div class="modal-body">
 				{UPDATE_ARTICLE_FORM}

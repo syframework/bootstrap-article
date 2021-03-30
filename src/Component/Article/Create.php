@@ -8,6 +8,7 @@ class Create extends \Sy\Bootstrap\Component\Form\Crud\Create {
 	}
 
 	public function init() {
+		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 		parent::init();
 
 		// Title

@@ -1,6 +1,6 @@
 # sy/bootstrap-article
 
-Plugin for adding Article feature
+[sy/bootstrap](https://github.com/syframework/bootstrap) plugin for adding "Article" feature in your [sy/project](https://github.com/syframework/project) based application.
 
 ## Installation
 
@@ -39,12 +39,7 @@ class Page extends \Sy\Bootstrap\Application\Page {
 		// Add article modal button
 		$service = \Project\Service\Container::getInstance();
 		if ($service->user->getCurrentUser()->hasPermission('article-create')) {
-			$lang = \Sy\Translate\LangDetector::getInstance(LANG)->getLang();
-			$create = new \Sy\Bootstrap\Component\Article\Create();
-			$create->getField('lang')->setAttribute('value', $lang);
-			$add = new \Sy\Bootstrap\Component\Modal\Button('addArticleModal', 'New article', 'plus');
-			$add->getDialog()->setBody($create);
-			$components['ADD_FORM'] = $add;
+			$components['ADD_FORM'] = new \Sy\Bootstrap\Component\Article\Add();
 		}
 
 		$this->__call('articles', ['CONTENT' => $components]);
@@ -88,3 +83,9 @@ class Page extends \Sy\Bootstrap\Application\Page {
 ## Language files
 
 Copy the language folder ```lang/bootstrap-article``` into your project language directory: ```protected/lang```
+
+## CSS
+
+Copy the scss file ```scss/_bootstrap-article.scss``` into your project scss directory: ```protected/scss```
+
+Import it in your ```app.scss``` file and rebuild the css file.

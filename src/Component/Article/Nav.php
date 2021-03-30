@@ -50,7 +50,7 @@ class Nav extends \Sy\Component\Html\Navigation {
 			return $i;
 		} else {
 			$active = ($id === (int)$this->get('category')) ? 'active' : '';
-			$attributes = ['data-toggle' => 'collapse'];
+			$attributes = ['data-bs-toggle' => 'collapse'];
 			$attributes['class'] = 'nav-link';
 			if (!$active and !in_array($this->get('category'), array_column($categories, 'id'))) {
 				$attributes['class'] .= ' collapsed';

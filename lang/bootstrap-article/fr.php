@@ -22,4 +22,7 @@ return [
 	'Category_id' => 'Cat&eacute;gorie',
 	'Published at' => 'Date de publication',
 	'Must read...' => 'A lire &eacute;galement...',
+	'Published' => 'Publi&eacute;',
+	'Updated' => 'Modifi&eacute;',
+	'by' => 'par',
 ];

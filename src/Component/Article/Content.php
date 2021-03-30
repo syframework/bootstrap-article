@@ -15,25 +15,15 @@ class Content extends \Sy\Component\WebComponent {
 	 */
 	private $lang;
 
-	/**
-	 * @var \Sy\Bootstrap\Component\Ads\Google
-	 */
-	private $ads;
-
 	public function __construct($id, $lang) {
 		parent::__construct();
 		$this->id   = $id;
 		$this->lang = $lang;
-		$this->ads  = null;
 	}
 
 	public function __toString() {
 		$this->init();
 		return parent::__toString();
-	}
-
-	public function setAds($ads) {
-		$this->ads  = $ads;
 	}
 
 	private function init() {
@@ -101,11 +91,6 @@ class Content extends \Sy\Component\WebComponent {
 
 		// Set article content
 		$this->setVar('CONTENT', $article['content']);
-
-		// Set ads in article content
-		if (!empty($this->ads)) {
-			$this->setComponent('ADS', $this->ads);
-		}
 
 		// Micro data
 		$publishedAt = new \Sy\Bootstrap\Lib\Date($article['published_at']);

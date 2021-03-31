@@ -26,4 +26,5 @@ return [
 	'Updated' => 'Modifi&eacute;',
 	'by' => 'par',
 	'Share this article' => 'Partager cet article',
+	'Status' => 'Statut',
 ];

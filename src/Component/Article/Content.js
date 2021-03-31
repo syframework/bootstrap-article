@@ -37,8 +37,8 @@ $(function() {
 			if (res.status === 'ok') {
 				content = res.content;
 			}
+			changed = false;
 		}, 'json');
-		changed = false;
 	}
 
 	$('#btn-article-update-start').click(function(e) {
@@ -53,7 +53,7 @@ $(function() {
 				'/',
 				{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
 				{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
-				{ name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'EmojiPanel', 'SpecialChar', 'Iframe' ] },
+				{ name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar', 'Iframe' ] },
 				'/',
 				{ name: 'styles', items: [ 'Styles', 'Format' ] },
 				{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
@@ -71,7 +71,7 @@ $(function() {
 			filebrowserWindowHeight: 400,
 			imageUploadUrl: '{IMG_UPLOAD_AJAX}',
 			uploadUrl: '{FILE_UPLOAD_AJAX}',
-			extraPlugins: 'sourcedialog,sycomponent,tableresize,embedbase,embed,autoembed,uploadimage,uploadfile,emoji',
+			extraPlugins: 'sourcedialog,sycomponent,sywidget,tableresize,embedbase,embed,autoembed,uploadimage,uploadfile',
 			allowedContent: {
 				$1: {
 					elements: CKEDITOR.dtd,
@@ -95,9 +95,6 @@ $(function() {
 			removePlugins: 'about,bidi,font,forms,language,pagebreak,newpage,wsc,scayt,flash,smiley',
 			templates: 'websyte',
 			templates_files: ['{CKEDITOR_ROOT}/templates/{LANG}/article.js'],
-			<!-- BEGIN IFRAMELY_BLOCK -->
-			embed_provider: '{IFRAMELY}?url={' + 'url' + '}&callback={' + 'callback' + '}&api_key={IFRAMELY_KEY}',
-			<!-- END IFRAMELY_BLOCK -->
 			on: {
 				instanceReady: function (ev) {
 					this.dataProcessor.writer.setRules('p', {
@@ -133,10 +130,6 @@ $(function() {
 				},
 				insertElement: function(e) {
 					if (e.data.getName() !== 'img') return;
-					if (e.data.getAttribute('src').indexOf('emojione') > -1) {
-						e.data.addClass('emojione');
-						return;
-					}
 					e.data.addClass('img-fluid');
 					e.data.setAttribute('style', '');
 				},

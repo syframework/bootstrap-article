@@ -25,4 +25,5 @@ return [
 	'Published' => 'Publi&eacute;',
 	'Updated' => 'Modifi&eacute;',
 	'by' => 'par',
+	'Share this article' => 'Partager cet article',
 ];

@@ -7,6 +7,7 @@ $(function() {
 	CKEDITOR.dtd.$removeEmpty['span'] = false;
 	CKEDITOR.dtd.$removeEmpty['i'] = false;
 	CKEDITOR.plugins.addExternal('sycomponent', '{CKEDITOR_ROOT}/plugins/sycomponent/');
+	CKEDITOR.plugins.addExternal('sywidget', '{CKEDITOR_ROOT}/plugins/sywidget/');
 
 	function save(reload) {
 		$.post("{URL}", {

@@ -1,7 +1,7 @@
 <?php
 namespace Sy\Bootstrap\Component\Article;
 
-class Side extends \Sy\Component\Html\Panel {
+class Side extends \Sy\Component\WebComponent {
 
 	private $articleId;
 	private $categoryId;
@@ -18,25 +18,26 @@ class Side extends \Sy\Component\Html\Panel {
 	}
 
 	private function init() {
-		$service = \Project\Service\Container::getInstance();
+		$this->setTemplateContent('{CONTENT}');
 
 		$lang = \Sy\Translate\LangDetector::getInstance(LANG)->getLang();
 
 		$articles = $this->getSideArticles($this->articleId, $lang, $this->categoryId);
 
 		foreach ($articles as $article) {
-			$this->setComponent('CENTER', new Feed\Item($article), true);
+			$this->setComponent('CONTENT', new Feed\Item($article), true);
 		}
 	}
 
 	private function getSideArticles($articleId, $lang, $categoryId) {
-		$service = \Project\Service\Container::getInstance();
+		$service = \Sy\Bootstrap\Service\Container::getInstance();
 		if (empty($categoryId)) {
 			return $service->article->retrieveSide($articleId, $lang);
 		} else {
 			$articles = $service->article->retrieveSide($articleId, $lang, $categoryId);
 			if (empty($articles)) {
 				$category = $service->articleCategory->retrieve(['id' => $categoryId]);
+				$this->log($category);
 				return $this->getSideArticles($articleId, $lang, $category['parent']);
 			} else {
 				return $articles;

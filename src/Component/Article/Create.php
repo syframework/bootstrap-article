@@ -42,7 +42,7 @@ class Create extends \Sy\Bootstrap\Component\Form\Crud\Create {
 
 			$fields['content'] = '<h1>' . (empty(trim($fields['title'])) ? $this->_('Title') . ' <small>' . $this->_('Optional subtitle') . '</small>' : $fields['title']) . '</h1>'
 				. '<p class="lead">' . (empty(trim($fields['description'])) ? $this->_('Lead paragraph') : $fields['description']) . '</p>'
-				. '<p><img class="img-fluid rounded" src="https://placehold.it/800x400?text=Image" /></p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
+				. '<p><img class="img-fluid rounded" src="https://picsum.photos/900/500" /></p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
 
 			// Article alias
 			$title = trim($fields['title']);

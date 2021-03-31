@@ -21,6 +21,11 @@
 	}
 }
 
+#article-content img:not([class]) {
+	max-width: 100%;
+	height: auto;
+}
+
 // Item
 a.item {
 	color: inherit;

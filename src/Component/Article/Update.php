@@ -13,6 +13,8 @@ class Update extends \Sy\Bootstrap\Component\Form\Crud {
 	}
 
 	public function init() {
+		$this->addTranslator(LANG_DIR . '/bootstrap-article');
+
 		parent::initInputs();
 
 		// Title

@@ -19,7 +19,7 @@ return [
 	'Article created successfully' => 'Article cr&eacute;e',
 	'Article already exists' => 'Cet article existe d&eacute;j&agrave;',
 	'All in %s' => 'Tous dans %s',
-	'Category_id' => 'Cat&eacute;gorie',
+	'Category id' => 'Cat&eacute;gorie',
 	'Published at' => 'Date de publication',
 	'Must read...' => 'A lire &eacute;galement...',
 	'Published' => 'Publi&eacute;',

@@ -61,7 +61,7 @@ class Nav extends \Sy\Component\Html\Navigation {
 			$all->addClass('nav-item');
 			$list = $li->getList();
 			$list->setAttributes([
-				'class' => 'nav nav-pills collapse',
+				'class' => 'nav nav-pills flex-column collapse',
 				'id'    => 'category_' . $id,
 			]);
 			if ($active) {

@@ -53,7 +53,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 				// resize image
 				if ($type === 'image') {
 					list($w, $h) = getimagesize(UPLOAD_DIR . "/$item/$type/$id/$file");
-					$max = 800;
+					$max = 900;
 					if (max([$w, $h]) > $max) {
 						if ($h > $w) {
 							$w = $max * $w / $h;

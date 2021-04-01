@@ -27,4 +27,5 @@ return [
 	'by' => 'par',
 	'Share this article' => 'Partager cet article',
 	'Status' => 'Statut',
+	'Draft' => 'Brouillon',
 ];

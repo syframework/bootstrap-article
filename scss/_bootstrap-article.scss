@@ -45,3 +45,25 @@ a.item {
 		color: inherit;
 	}
 }
+
+.article-author {
+	img {
+		width: 60px;
+	}
+}
+
+@include media-breakpoint-up(md) {
+	.article-author {
+		img {
+			width: 80px;
+		}
+	}
+}
+
+@include media-breakpoint-up(lg) {
+	.article-author {
+		img {
+			width: 100px;
+		}
+	}
+}

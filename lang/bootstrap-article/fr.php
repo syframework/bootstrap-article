@@ -28,4 +28,5 @@ return [
 	'Share this article' => 'Partager cet article',
 	'Status' => 'Statut',
 	'Draft' => 'Brouillon',
+	'About the author' => "A propos de l'auteur",
 ];

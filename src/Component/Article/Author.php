@@ -8,15 +8,21 @@ use Sy\Component\WebComponent;
 class Author extends WebComponent {
 
 	private $id;
+	private $footer;
 
 	public function __construct($id) {
 		parent::__construct();
 		$this->id = $id;
+		$this->footer = '';
 	}
 
 	public function __toString() {
 		$this->init();
 		return parent::__toString();
+	}
+
+	public function setFooter($footer) {
+		$this->footer = $footer;
 	}
 
 	private function init() {
@@ -29,8 +35,8 @@ class Author extends WebComponent {
 		$this->setVars([
 			'AVATAR' => Url::avatar($user['id']),
 			'AUTHOR' => htmlentities(trim($user['firstname'] . ' ' . $user['lastname']), ENT_QUOTES, 'UTF-8'),
-			'LINKS'  => new \Sy\Bootstrap\Component\Link\Div('user-' . $user['id']),
-			'DESCRIPTION' => $user['description']
+			'DESCRIPTION' => $user['description'],
+			'FOOTER' => $this->footer,
 		]);
 	}
 

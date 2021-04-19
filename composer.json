@@ -4,8 +4,7 @@
 	"type": "library",
 	"require": {
 		"php": ">=7",
-		"sy/bootstrap": "dev-develop",
-		"sy/bootstrap-link": "dev-develop"
+		"sy/bootstrap": "dev-develop"
 	},
 	"license": "MIT",
 	"authors": [

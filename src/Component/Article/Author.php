@@ -29,6 +29,7 @@ class Author extends WebComponent {
 		$this->setVars([
 			'AVATAR' => Url::avatar($user['id']),
 			'AUTHOR' => htmlentities(trim($user['firstname'] . ' ' . $user['lastname']), ENT_QUOTES, 'UTF-8'),
+			'LINKS'  => new \Sy\Bootstrap\Component\Link\Div('user-' . $user['id']),
 			'DESCRIPTION' => $user['description']
 		]);
 	}

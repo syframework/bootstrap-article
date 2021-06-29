@@ -33,7 +33,7 @@ class Feed extends \Sy\Bootstrap\Component\Feed {
 			}
 			$nb = $service->article->count($condition);
 			return $nb <= (($n + 1) * 10);
-		} catch (\Sy\Bootstrap\Lib\Crud\Exception $e) {
+		} catch (\Sy\Bootstrap\Service\Crud\Exception $e) {
 			$this->logError('SQL Error');
 			return true;
 		}

@@ -43,7 +43,7 @@ class Page extends \Sy\Component\WebComponent {
 				$condition['status'] = 'public';
 			}
 			$articles = $service->article->retrieveAll($condition);
-		} catch (\Sy\Bootstrap\Lib\Crud\Exception $e) {
+		} catch (\Sy\Bootstrap\Service\Crud\Exception $e) {
 			$articles = [];
 		}
 

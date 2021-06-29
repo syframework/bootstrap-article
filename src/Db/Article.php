@@ -10,11 +10,10 @@ class Article extends Crud {
 	}
 
 	public function create(array $fields) {
-		$this->beginTransaction();
-		parent::create($fields);
-		$id = $this->lastInsertId();
-		$this->commit();
-		return $id;
+		return $this->transaction(function() use ($fields) {
+			parent::create($fields);
+			return $this->lastInsertId();
+		});
 	}
 
 	public function retrieve(array $pk) {
@@ -24,7 +23,7 @@ class Article extends Crud {
 		if (!empty($res)) return $res;
 
 		// Cache miss
-		$res = $this->queryOne(new \Sy\Db\MySql\Select([
+		$res = $this->db->queryOne(new \Sy\Db\MySql\Select([
 			'FROM'  => 'v_article',
 			'WHERE' => $pk,
 		]), \PDO::FETCH_ASSOC);
@@ -58,7 +57,7 @@ class Article extends Crud {
 			ORDER BY published_at DESC
 			LIMIT 3
 		", $params);
-		return $this->queryAll($sql, \PDO::FETCH_ASSOC);
+		return $this->db->queryAll($sql, \PDO::FETCH_ASSOC);
 	}
 
 	public function count($where = null) {
@@ -69,7 +68,7 @@ class Article extends Crud {
 			LEFT JOIN t_user user ON t_article.user_id = user.id
 			$where
 		", $params);
-		$res = $this->queryOne($sql);
+		$res = $this->db->queryOne($sql);
 		return $res[0];
 	}
 
@@ -99,7 +98,7 @@ class Article extends Crud {
 			ORDER BY $order
 			LIMIT 10 OFFSET $offset
 		", $params);
-		$res = $this->queryAll($sql, \PDO::FETCH_ASSOC);
+		$res = $this->db->queryAll($sql, \PDO::FETCH_ASSOC);
 		$this->setCache($key, $res);
 		return $res;
 	}

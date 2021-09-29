@@ -17,18 +17,10 @@ class Article extends Crud {
 	}
 
 	public function retrieve(array $pk) {
-		// Cache hit
-		$key = $this->getCacheKey('retrieve', $pk);
-		$res = $this->getCache($key);
-		if (!empty($res)) return $res;
-
-		// Cache miss
-		$res = $this->db->queryOne(new \Sy\Db\MySql\Select([
+		return parent::executeRetrieve($pk, new \Sy\Db\MySql\Select([
 			'FROM'  => 'v_article',
 			'WHERE' => $pk,
-		]), \PDO::FETCH_ASSOC);
-		$this->setCache($key, $res);
-		return $res;
+		]));
 	}
 
 	public function retrieveSide($articleId, $lang = null, $categoryId = null) {
@@ -73,12 +65,6 @@ class Article extends Crud {
 	}
 
 	public function retrieveAll(array $parameters = []) {
-		// Cache hit
-		$key = $this->getCacheKey('retrieveAll', $parameters);
-		$res = $this->getCache($key);
-		if (!empty($res)) return $res;
-
-		// Cache miss
 		list($where, $params)  = $this->where($parameters);
 		$offset = empty($parameters['last']) ? 0 : (int)$parameters['last'];
 		$order  = empty($parameters['q']) ? 'published_at DESC' : 'MATCH(t_article.title, t_article.description) AGAINST(:q IN BOOLEAN MODE) DESC';
@@ -98,9 +84,7 @@ class Article extends Crud {
 			ORDER BY $order
 			LIMIT 10 OFFSET $offset
 		", $params);
-		$res = $this->db->queryAll($sql, \PDO::FETCH_ASSOC);
-		$this->setCache($key, $res);
-		return $res;
+		return $this->executeRetrieveAll($parameters, $sql);
 	}
 
 	private function where($parameters) {

@@ -114,6 +114,9 @@ $(function() {
 					});
 					this.dataProcessor.htmlFilter.addRules({
 						elements: {
+							div: function(el) {
+								if (el.hasClass('google-auto-placed')) el.remove();
+							},
 							img: function(el) {
 								el.addClass('img-fluid');
 							}

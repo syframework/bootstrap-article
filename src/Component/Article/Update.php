@@ -63,8 +63,7 @@ class Update extends \Sy\Bootstrap\Component\Form\Crud {
 
 		// Article published_at
 		if ($service->user->getCurrentUser()->hasPermission('article-status')) {
-			$publishedAt = new \Sy\Bootstrap\Lib\Date($article['published_at']);
-			$this->addDateTime(['name' => 'form[published_at]', 'value' => $publishedAt->f("yyyy-MM-dd'T'HH:mm")], ['label' => 'Published at']);
+			$this->addDateTime(['name' => 'form[published_at]', 'value' => $article['published_at']], ['label' => 'Published at']);
 		}
 		parent::initButton();
 	}

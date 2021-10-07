@@ -9,13 +9,6 @@ class Article extends Crud {
 		parent::__construct('t_article');
 	}
 
-	public function create(array $fields) {
-		return $this->transaction(function() use ($fields) {
-			parent::create($fields);
-			return $this->lastInsertId();
-		});
-	}
-
 	public function retrieve(array $pk) {
 		return parent::executeRetrieve($pk, new \Sy\Db\MySql\Select([
 			'FROM'  => 'v_article',

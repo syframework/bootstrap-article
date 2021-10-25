@@ -85,6 +85,10 @@ class Update extends \Sy\Bootstrap\Component\Form\Crud {
 			// Remove newline in description
 			$fields['description'] = preg_replace('/\s+/', ' ', $fields['description']);
 
+			// Convert datetime
+			$date = new \Sy\Bootstrap\Lib\Date($fields['published_at']);
+			$fields['published_at'] = $date->f("yyyy-MM-dd HH:mm");
+
 			$this->updateRow($fields);
 			$this->setSuccess($this->_('Saved'), \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $this->id]));
 		} catch(\Sy\Component\Html\Form\Exception $e) {

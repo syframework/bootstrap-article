@@ -15,7 +15,7 @@ class Article extends \Sy\Bootstrap\Component\Sitemap {
 			$date = new \Sy\Bootstrap\Lib\Date($row['updated_at']);
 			$this->setVars([
 				'LOC'  => PROJECT_URL . \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $row['id'], 'alias' => $row['alias']]),
-				'LAST' => $date->f('Y-m-d'),
+				'LAST' => $date->f('yyyy-MM-dd'),
 			]);
 			$alt = json_decode($row['alternate'], true);
 			if (count($alt) > 1) {

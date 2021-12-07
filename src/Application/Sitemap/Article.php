@@ -1,7 +1,7 @@
 <?php
 namespace Sy\Bootstrap\Application\Sitemap;
 
-class Article extends IProvider {
+class Article implements IProvider {
 
 	/**
 	 * Returns sitemap index urls

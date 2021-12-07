@@ -28,7 +28,7 @@ class Article implements IProvider {
 			$alt = json_decode($row['alternate'], true);
 			if (count($alt) > 1) {
 				foreach ($alt as $lang => $alias) {
-					$url['alternate'][] = [$lang => PROJECT_URL . \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $row['id'], 'alias' => $alias])];
+					$url['alternate'][$lang] = PROJECT_URL . \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $row['id'], 'alias' => $alias]);
 				}
 			}
 

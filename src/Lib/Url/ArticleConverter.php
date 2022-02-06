@@ -29,7 +29,7 @@ class ArticleConverter implements IConverter {
 		}
 
 		$lang = \Sy\Translate\LangDetector::getInstance(LANG)->getLang();
-		$service = \Sy\Bootstrap\Service\Container::getInstance();
+		$service = \Project\Service\Container::getInstance();
 		$article = $service->article->retrieve(['id' => $id, 'lang' => $lang]);
 		if (empty($article['alias'])) $article = $service->article->retrieve(['id' => $id, 'lang' => LANG]);
 		if (empty($article['alias'])) return null;
@@ -41,7 +41,7 @@ class ArticleConverter implements IConverter {
 		list($alias) = sscanf(substr($uri, strlen(WEB_ROOT) + 1), $this->prefix . "%s");
 		if (empty($alias)) return false;
 
-		$service = \Sy\Bootstrap\Service\Container::getInstance();
+		$service = \Project\Service\Container::getInstance();
 		$article = $service->article->retrieve(['alias' => $alias]);
 		if (empty($article)) return false;
 

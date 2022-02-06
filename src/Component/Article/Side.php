@@ -30,7 +30,7 @@ class Side extends \Sy\Component\WebComponent {
 	}
 
 	private function getSideArticles($articleId, $lang, $categoryId) {
-		$service = \Sy\Bootstrap\Service\Container::getInstance();
+		$service = \Project\Service\Container::getInstance();
 		if (empty($categoryId)) {
 			return $service->article->retrieveSide($articleId, $lang);
 		} else {

@@ -1,12 +1,10 @@
 <?php
 namespace Sy\Bootstrap\Application\Editor;
 
-use Sy\Bootstrap\Service\Container;
-
 class Article extends \Sy\Bootstrap\Component\Api {
 
 	public function security() {
-		$service = Container::getInstance();
+		$service = \Project\Service\Container::getInstance();
 		$user = $service->user->getCurrentUser();
 		if (is_null($this->request('id'))) $this->requestError();
 

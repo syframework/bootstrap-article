@@ -19,19 +19,34 @@ class Content extends \Sy\Component\WebComponent {
 		parent::__construct();
 		$this->id   = $id;
 		$this->lang = $lang;
-	}
-
-	public function __toString() {
-		$this->init();
-		return parent::__toString();
-	}
-
-	private function init() {
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 
 		// Template
 		$this->setTemplateFile(__DIR__ . '/Content.html');
 
+		// Retrieve article
+		$service = \Project\Service\Container::getInstance();
+		$article = $service->article->retrieve(['id' => $this->id, 'lang' => $this->lang]);
+
+		// Set article title and description
+		if (!empty($article['title'])) {
+			$title = htmlentities($article['title'], ENT_QUOTES, 'UTF-8');
+			\Sy\Bootstrap\Lib\HeadData::setTitle($title);
+			\Sy\Bootstrap\Lib\HeadData::addMeta('og:title', $title);
+			$this->setVar('TITLE', $title);
+		}
+		if (!empty($article['description'])) {
+			$description = htmlentities($article['description'], ENT_QUOTES, 'UTF-8');
+			\Sy\Bootstrap\Lib\HeadData::setDescription($description);
+			\Sy\Bootstrap\Lib\HeadData::addMeta('og:description', $description);
+			$this->setVar('DESCRIPTION', $description);
+		}
+
+		$this->mount(function () {
+			$this->init();
+		});
+	}
+
+	private function init() {
 		// Javascript code
 		$js = new \Sy\Component();
 		$js->setTemplateFile(__DIR__ . '/Content.js');
@@ -48,38 +63,24 @@ class Content extends \Sy\Component\WebComponent {
 			}
 		}
 
-		// Set article title and description
-		if (!empty($article['title'])) {
-			$title = htmlentities($article['title'], ENT_QUOTES, 'UTF-8');
-			\Sy\Bootstrap\Lib\HeadData::setTitle($title);
-			\Sy\Bootstrap\Lib\HeadData::addMeta('og:title', $title);
-			$this->setVar('TITLE', $title);
-		}
-		if (!empty($article['description'])) {
-			$description = htmlentities($article['description'], ENT_QUOTES, 'UTF-8');
-			\Sy\Bootstrap\Lib\HeadData::setDescription($description);
-			\Sy\Bootstrap\Lib\HeadData::addMeta('og:description', $description);
-			$this->setVar('DESCRIPTION', $description);
-		}
-
 		// Set meta url and type
 		\Sy\Bootstrap\Lib\HeadData::addMeta('og:type', 'article');
 		\Sy\Bootstrap\Lib\HeadData::addMeta('og:url', PROJECT_URL . Url::build('page', 'article', ['id' => $article['id']]));
 
 		// Set meta og image
-		if (is_dir(UPLOAD_DIR . "/article/image/${article['id']}")) {
-			$files = array_diff(scandir(UPLOAD_DIR . "/article/image/${article['id']}"), ['.', '..']);
+		if (is_dir(UPLOAD_DIR . "/article/image/{$article['id']}")) {
+			$files = array_diff(scandir(UPLOAD_DIR . "/article/image/{$article['id']}"), ['.', '..']);
 
 			// Sort $files oldest file to newest file
 			array_multisort(array_map(function($file) use($article) {
-				return filemtime(UPLOAD_DIR . "/article/image/${article['id']}/$file");
+				return filemtime(UPLOAD_DIR . "/article/image/{$article['id']}/$file");
 			}, $files), $files);
 
 			$images = [];
 
 			foreach ($files as $file) {
-				if (\Sy\Bootstrap\Lib\Image::isImage(UPLOAD_DIR . "/article/image/${article['id']}/$file")) {
-					$images[] = PROJECT_URL . UPLOAD_ROOT . "/article/image/${article['id']}/$file";
+				if (\Sy\Bootstrap\Lib\Image::isImage(UPLOAD_DIR . "/article/image/{$article['id']}/$file")) {
+					$images[] = PROJECT_URL . UPLOAD_ROOT . "/article/image/{$article['id']}/$file";
 				}
 			}
 			if (!empty($images)) {
@@ -141,7 +142,7 @@ class Content extends \Sy\Component\WebComponent {
 			$this->setBlock('DELETE_BTN_BLOCK');
 			$js->setVars([
 				'CONFIRM_DELETE' => $this->_('Are you sure to delete this article?'),
-				'DELETE_FORM_ID' => 'delete-' . $this->id
+				'DELETE_FORM_ID' => 'delete-' . $this->id,
 			]);
 			$js->setBlock('DELETE_BLOCK');
 		}

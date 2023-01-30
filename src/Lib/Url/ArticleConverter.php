@@ -41,7 +41,7 @@ class ArticleConverter implements IConverter {
 		unset($params['lang']);
 		$service = \Project\Service\Container::getInstance();
 		$article = $service->article->retrieve(['id' => $id, 'lang' => $lang]);
-		if (empty($article['alias'])) $article = $service->article->retrieve(['id' => $id, 'lang' => LANG]);
+		// if (empty($article['alias'])) $article = $service->article->retrieve(['id' => $id, 'lang' => LANG]);
 		if (empty($article['alias'])) return false;
 		return WEB_ROOT . '/' . $this->prefix . $article['alias'] . (empty($params) ? '' : '?' . http_build_query($params));
 	}

@@ -37,7 +37,8 @@ class ArticleConverter implements IConverter {
 			return $url . (empty($params) ? '' : '?' . http_build_query($params));
 		}
 
-		$lang = \Sy\Translate\LangDetector::getInstance(LANG)->getLang();
+		$lang = $params['lang'] ?? \Sy\Translate\LangDetector::getInstance(LANG)->getLang();
+		unset($params['lang']);
 		$service = \Project\Service\Container::getInstance();
 		$article = $service->article->retrieve(['id' => $id, 'lang' => $lang]);
 		if (empty($article['alias'])) $article = $service->article->retrieve(['id' => $id, 'lang' => LANG]);
@@ -45,6 +46,9 @@ class ArticleConverter implements IConverter {
 		return WEB_ROOT . '/' . $this->prefix . $article['alias'] . (empty($params) ? '' : '?' . http_build_query($params));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function urlToParams($url) {
 		$uri = parse_url($url, PHP_URL_PATH);
 		$queryString = parse_url($url, PHP_URL_QUERY);
@@ -59,6 +63,7 @@ class ArticleConverter implements IConverter {
 		$params[CONTROLLER_TRIGGER] = 'page';
 		$params[ACTION_TRIGGER] = 'article';
 		$params['id'] = $article['id'];
+		$params['lang'] = $article['lang'];
 		$service->user->setLanguage($article['lang']);
 
 		$queryParams = [];

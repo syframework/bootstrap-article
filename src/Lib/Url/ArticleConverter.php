@@ -3,22 +3,31 @@ namespace Sy\Bootstrap\Lib\Url;
 
 class ArticleConverter implements IConverter {
 
+	/**
+	 * @var string
+	 */
 	private $prefix;
 
+	/**
+	 * @param string $prefix
+	 */
 	public function __construct($prefix = 'a/') {
 		$this->prefix = $prefix;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function paramsToUrl(array $params) {
-		if (empty($params[CONTROLLER_TRIGGER])) return null;
-		if ($params[CONTROLLER_TRIGGER] !== 'page') return null;
+		if (empty($params[CONTROLLER_TRIGGER])) return false;
+		if ($params[CONTROLLER_TRIGGER] !== 'page') return false;
 		unset($params[CONTROLLER_TRIGGER]);
 
-		if (empty($params[ACTION_TRIGGER])) return null;
-		if ($params[ACTION_TRIGGER] !== 'article') return null;
+		if (empty($params[ACTION_TRIGGER])) return false;
+		if ($params[ACTION_TRIGGER] !== 'article') return false;
 		unset($params[ACTION_TRIGGER]);
 
-		if (empty($params['id'])) return null;
+		if (empty($params['id'])) return false;
 		$id = $params['id'];
 		unset($params['id']);
 
@@ -32,12 +41,14 @@ class ArticleConverter implements IConverter {
 		$service = \Project\Service\Container::getInstance();
 		$article = $service->article->retrieve(['id' => $id, 'lang' => $lang]);
 		if (empty($article['alias'])) $article = $service->article->retrieve(['id' => $id, 'lang' => LANG]);
-		if (empty($article['alias'])) return null;
+		if (empty($article['alias'])) return false;
 		return WEB_ROOT . '/' . $this->prefix . $article['alias'] . (empty($params) ? '' : '?' . http_build_query($params));
 	}
 
 	public function urlToParams($url) {
-		list($uri) = explode('?', $url, 2);
+		$uri = parse_url($url, PHP_URL_PATH);
+		$queryString = parse_url($url, PHP_URL_QUERY);
+
 		list($alias) = sscanf(substr($uri, strlen(WEB_ROOT) + 1), $this->prefix . "%s");
 		if (empty($alias)) return false;
 
@@ -45,14 +56,15 @@ class ArticleConverter implements IConverter {
 		$article = $service->article->retrieve(['alias' => $alias]);
 		if (empty($article)) return false;
 
-		$_REQUEST[CONTROLLER_TRIGGER] = 'page';
-		$_GET[CONTROLLER_TRIGGER] = 'page';
-		$_REQUEST[ACTION_TRIGGER] = 'article';
-		$_GET[ACTION_TRIGGER] = 'article';
-		$_REQUEST['id'] = $article['id'];
-		$_GET['id'] = $article['id'];
+		$params[CONTROLLER_TRIGGER] = 'page';
+		$params[ACTION_TRIGGER] = 'article';
+		$params['id'] = $article['id'];
 		$service->user->setLanguage($article['lang']);
-		return true;
+
+		$queryParams = [];
+		if (!is_null($queryString)) parse_str($queryString, $queryParams);
+
+		return $params + $queryParams;
 	}
 
 }

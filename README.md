@@ -5,7 +5,7 @@
 ## Installation
 
 ```bash
-$ composer require sy/bootstrap-article
+composer require sy/bootstrap-article
 ```
 
 ## Database

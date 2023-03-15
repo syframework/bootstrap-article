@@ -1,34 +1,38 @@
 <?php
 namespace Sy\Bootstrap\Application\Sitemap;
 
-class Article extends \Sy\Bootstrap\Component\Sitemap {
+class Article implements IProvider {
 
-	public function index() {
+	/**
+	 * Returns sitemap index urls
+	 *
+	 * @return array An array of URL string
+	 */
+	public function getIndexUrls() {
 		return array(PROJECT_URL . \Sy\Bootstrap\Lib\Url::build('sitemap', 'article'));
 	}
 
-	public function init() {
-		$service = \Project\Service\Container::getInstance();
+	/**
+	 * Returns sitemap urls
+	 */
+	public function getUrls() {
+		$urls = [];
 
 		// Article
-		$service->article->foreachRow(function ($row) {
+		$service = \Project\Service\Container::getInstance();
+		$service->article->foreachRow(function ($row) use(&$urls) {
 			$date = new \Sy\Bootstrap\Lib\Date($row['updated_at']);
-			$this->setVars([
-				'LOC'  => PROJECT_URL . \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $row['id'], 'alias' => $row['alias']]),
-				'LAST' => $date->f('Y-m-d'),
-			]);
+			$url['loc'] = PROJECT_URL . \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $row['id'], 'alias' => $row['alias']]);
+			$url['lastmod'] = $date->f('yyyy-MM-dd');
+
 			$alt = json_decode($row['alternate'], true);
 			if (count($alt) > 1) {
 				foreach ($alt as $lang => $alias) {
-					$this->setVars([
-						'LANG' => $lang,
-						'HREF' => PROJECT_URL . \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $row['id'], 'alias' => $alias]),
-					]);
-					$this->setBlock('ALT_BLOCK');
+					$url['alternate'][$lang] = PROJECT_URL . \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $row['id'], 'alias' => $alias]);
 				}
 			}
-			$this->setBlock('LAST_BLOCK');
-			$this->setBlock('URL_BLOCK');
+
+			$urls[] = $url;
 		}, [
 			'SELECT'   => "t_article.*, CONCAT('{', GROUP_CONCAT(CONCAT('\"', b.lang, '\":\"', b.alias, '\"')), '}') AS 'alternate'",
 			'JOIN'     => 'LEFT JOIN t_article b ON t_article.id = b.id',
@@ -36,7 +40,7 @@ class Article extends \Sy\Bootstrap\Component\Sitemap {
 			'GROUP BY' => 't_article.id, t_article.lang'
 		]);
 
-		$this->out();
+		return $urls;
 	}
 
 }

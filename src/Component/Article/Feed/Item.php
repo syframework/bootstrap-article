@@ -4,6 +4,7 @@ namespace Sy\Bootstrap\Component\Article\Feed;
 class Item extends \Sy\Component\WebComponent {
 
 	private $page;
+
 	private $article;
 
 	public function __construct($article, $page = 0) {
@@ -48,17 +49,17 @@ class Item extends \Sy\Component\WebComponent {
 			$this->setBlock('DRAFT_BLOCK');
 		}
 
-		if (is_dir(UPLOAD_DIR . "/article/image/${article['id']}")) {
-			$files = array_diff(scandir(UPLOAD_DIR . "/article/image/${article['id']}"), ['.', '..']);
+		if (is_dir(UPLOAD_DIR . "/article/image/{$article['id']}")) {
+			$files = array_diff(scandir(UPLOAD_DIR . "/article/image/{$article['id']}"), ['.', '..']);
 
 			// Sort $files oldest file to newest file
 			array_multisort(array_map(function($file) use($article) {
-				return filemtime(UPLOAD_DIR . "/article/image/${article['id']}/$file");
+				return filemtime(UPLOAD_DIR . "/article/image/{$article['id']}/$file");
 			}, $files), $files);
 
 			foreach ($files as $file) {
-				if (\Sy\Bootstrap\Lib\Image::isImage(UPLOAD_DIR . "/article/image/${article['id']}/$file")) {
-					$this->setVar('IMG', UPLOAD_ROOT . "/article/image/${article['id']}/$file");
+				if (\Sy\Bootstrap\Lib\Image::isImage(UPLOAD_DIR . "/article/image/{$article['id']}/$file")) {
+					$this->setVar('IMG', UPLOAD_ROOT . "/article/image/{$article['id']}/$file");
 					$this->setBlock('IMG_BLOCK');
 					break;
 				}

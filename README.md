@@ -5,7 +5,7 @@
 ## Installation
 
 ```bash
-$ composer require sy/bootstrap-article
+composer require sy/bootstrap-article
 ```
 
 ## Database
@@ -30,6 +30,8 @@ class Page extends \Sy\Bootstrap\Application\Page {
 	 * List of all articles page
 	 */
 	public function articles() {
+		$this->addTranslator(LANG_DIR . '/bootstrap-article');
+
 		$components = [
 			'NAV'         => new \Sy\Bootstrap\Component\Article\Nav('articles'),
 			'SEARCH_FORM' => new \Sy\Bootstrap\Component\Article\Search(),
@@ -49,6 +51,8 @@ class Page extends \Sy\Bootstrap\Application\Page {
 	 * Article page
 	 */
 	public function article() {
+		$this->addTranslator(LANG_DIR . '/bootstrap-article');
+
 		// Redirection if no article id provided
 		$id = $this->get('id');
 		if (is_null($id)) throw new \Sy\Bootstrap\Application\PageNotFoundException();
@@ -73,6 +77,7 @@ class Page extends \Sy\Bootstrap\Application\Page {
 			'ARTICLE_BREADCRUMB' => new \Sy\Bootstrap\Component\Article\Breadcrumb($id, $lang),
 			'ARTICLE_CONTENT'    => $content,
 			'SIDE'               => new \Sy\Bootstrap\Component\Article\Side($id, $article['category_id']),
+			'SHARE'              => new \Sy\Bootstrap\Component\Share\Buttons(PROJECT_URL . Url::build('page', 'article', ['id' => $id])),
 		]]);
 	}
 
@@ -89,3 +94,23 @@ Copy the language folder ```lang/bootstrap-article``` into your project language
 Copy the scss file ```scss/_bootstrap-article.scss``` into your project scss directory: ```protected/scss```
 
 Import it in your ```app.scss``` file and rebuild the css file.
+
+## Add URL converter in Application.php
+
+```php
+<?php
+namespace Project;
+
+use Sy\Bootstrap\Lib\Url;
+
+class Application extends \Sy\Bootstrap\Application {
+
+	protected function initUrlConverter() {
+		Url\AliasManager::setAliasFile(__DIR__ . '/../conf/alias.php');
+		Url::addConverter(new Url\AliasConverter());
+		Url::addConverter(new Url\ArticleConverter());
+		Url::addConverter(new Url\ControllerActionConverter());
+	}
+
+}
+```

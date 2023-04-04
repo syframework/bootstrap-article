@@ -6,15 +6,14 @@ class Article extends \Sy\Bootstrap\Component\Api {
 	public function security() {
 		$service = \Project\Service\Container::getInstance();
 		$user = $service->user->getCurrentUser();
-		if (is_null($this->request('id'))) $this->requestError();
+		if (is_null($this->request('id'))) {
+			throw new \Sy\Bootstrap\Component\Api\RequestErrorException('Missing article id parameter');
+		}
 
 		$article = $service->article->retrieve(['id' => $this->request('id'), 'lang' => LANG]);
 
 		if (!$user->hasPermission('article-update') and $user->id !== $article['user_id']) {
-			$this->forbidden([
-				'status' => 'ko',
-				'message' => $this->_('Permission denied')
-			]);
+			throw new \Sy\Bootstrap\Component\Api\ForbiddenException('Permission denied');
 		}
 	}
 

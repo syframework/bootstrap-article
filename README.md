@@ -29,7 +29,7 @@ class Page extends \Sy\Bootstrap\Application\Page {
 	/**
 	 * List of all articles page
 	 */
-	public function articles() {
+	public function articlesAction() {
 		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 
 		$components = [
@@ -50,7 +50,7 @@ class Page extends \Sy\Bootstrap\Application\Page {
 	/**
 	 * Article page
 	 */
-	public function article() {
+	public function articleAction() {
 		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 
 		// Redirection if no article id provided
@@ -108,7 +108,7 @@ class Application extends \Sy\Bootstrap\Application {
 	protected function initUrlConverter() {
 		Url\AliasManager::setAliasFile(__DIR__ . '/../conf/alias.php');
 		Url::addConverter(new Url\AliasConverter());
-		Url::addConverter(new Url\ArticleConverter());
+		Url::addConverter(new Url\ArticleConverter()); // Add article converter
 		Url::addConverter(new Url\ControllerActionConverter());
 	}
 

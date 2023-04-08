@@ -1,7 +1,11 @@
 <?php
 namespace Sy\Bootstrap\Application\Editor;
 
+use Sy\Bootstrap\Lib\Str;
+
 class Article extends \Sy\Bootstrap\Component\Api {
+
+	use CkFile;
 
 	public function security() {
 		$service = \Project\Service\Container::getInstance();
@@ -17,17 +21,13 @@ class Article extends \Sy\Bootstrap\Component\Api {
 		}
 	}
 
-	public function dispatch() {
-		$this->actionDispatch(ACTION_TRIGGER);
-	}
-
 	/**
 	 * CKEditor Upload
 	 */
 	public function uploadAction() {
 		$func = $this->get('CKEditorFuncNum');
 		$id   = $this->get('id');
-		$item = $this->get('item');
+		$item = str_replace('_', '-', Str::camlToSnake($this->action));
 		$type = $this->get('type');
 
 		$url = '';
@@ -44,7 +44,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 						$checkfile = null;
 						break;
 				}
-				$file = \Sy\Bootstrap\Lib\Str::slugify($parts['filename']) . '.' . strtolower($parts['extension']);
+				$file = Str::slugify($parts['filename']) . '.' . strtolower($parts['extension']);
 				\Sy\Bootstrap\Lib\Upload::proceed(UPLOAD_DIR . "/$item/$type/$id/$file", 'upload', $checkfile);
 
 				// resize image
@@ -75,17 +75,15 @@ class Article extends \Sy\Bootstrap\Component\Api {
 			$res = [
 				'uploaded' => (empty($message) ? 1 : 0),
 				'filename' => $file,
-				'url' => $url
+				'url'      => $url,
 			];
 
 			if (!empty($message)) $res['error']['message'] = $message;
-			echo json_encode($res);
+			return $this->ok($res);
 		} else {
 			// Works for ckeditor <= 4.8
-			echo "<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($func, '$url', '$message');</script>";
+			return $this->ok("<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($func, '$url', '$message');</script>");
 		}
-
-		exit;
 	}
 
 }

@@ -4,28 +4,53 @@
 
 ## Installation
 
+From your sy/project based application directory, run this command:
+
+```bash
+composer install-plugin article
+```
+---
+**NOTES**
+
+The install-plugin command will do all these following steps:
+
+### 1. Install package sy/bootstrap-article
+
 ```bash
 composer require sy/bootstrap-article
 ```
 
-## Database
+### 2. Copy database installation file into your sql directory
 
 Use the database installation script: ```sql/install.sql```
 
-## Template files
+### 3. Copy template files
 
 Copy template files into your project templates directory: ```protected/templates/Application/content```
 
+### 4. Copy language files
+
+Copy the language folder ```lang/bootstrap-article``` into your project language directory: ```protected/lang```
+
+### 5. Copy SCSS files
+
+Copy the scss file ```scss/_bootstrap-article.scss``` into your project scss directory: ```protected/scss```
+
+Import it in your ```app.scss``` file and rebuild the css file.
+
+### 6. Copy assets files
+
+### 7. Run composer build
+
+### 8. Run composer db migrate
+
+---
+
 ## Page methods
 
-Create 2 methods in your ```Project\Application\Page``` class:
+Create 2 methods in your ```Project\Application\Page``` class (in ```protected/src/Application/Page.php```):
 
 ```php
-<?php
-namespace Project\Application;
-
-class Page extends \Sy\Bootstrap\Application\Page {
-
 	/**
 	 * List of all articles page
 	 */
@@ -80,23 +105,12 @@ class Page extends \Sy\Bootstrap\Application\Page {
 			'SHARE'              => new \Sy\Bootstrap\Component\Share\Buttons(PROJECT_URL . Url::build('page', 'article', ['id' => $id])),
 		]]);
 	}
-
-	// ...
-}
 ```
 
-## Language files
-
-Copy the language folder ```lang/bootstrap-article``` into your project language directory: ```protected/lang```
-
-## CSS
-
-Copy the scss file ```scss/_bootstrap-article.scss``` into your project scss directory: ```protected/scss```
-
-Import it in your ```app.scss``` file and rebuild the css file.
 
 ## Add URL converter in Application.php
 
+In ```protected/src/Application.php```
 ```php
 <?php
 namespace Project;

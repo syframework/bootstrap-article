@@ -9,7 +9,7 @@ class Article implements IProvider {
 	 * @return array An array of URL string
 	 */
 	public function getIndexUrls() {
-		return array(PROJECT_URL . \Sy\Bootstrap\Lib\Url::build('sitemap', 'article'));
+		return [PROJECT_URL . \Sy\Bootstrap\Lib\Url::build('sitemap', 'article')];
 	}
 
 	/**
@@ -37,7 +37,7 @@ class Article implements IProvider {
 			'SELECT'   => "t_article.*, CONCAT('{', GROUP_CONCAT(CONCAT('\"', b.lang, '\":\"', b.alias, '\"')), '}') AS 'alternate'",
 			'JOIN'     => 'LEFT JOIN t_article b ON t_article.id = b.id',
 			'WHERE'    => ['t_article.status' => 'public'],
-			'GROUP BY' => 't_article.id, t_article.lang'
+			'GROUP BY' => 't_article.id, t_article.lang',
 		]);
 
 		return $urls;

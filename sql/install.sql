@@ -85,10 +85,8 @@ INSERT INTO `t_user_role_has_permission` VALUES ('super-admin', 'article-update'
 -- ----------------------------
 -- Records of t_page
 -- ----------------------------
-INSERT INTO `t_page` (id, lang, title) VALUES ('article', 'en', 'Article');
-INSERT INTO `t_page` (id, lang, title) VALUES ('article', 'fr', 'Article');
-INSERT INTO `t_page` (id, lang, title) VALUES ('articles', 'en', 'Articles');
-INSERT INTO `t_page` (id, lang, title) VALUES ('articles', 'fr', 'Articles');
+INSERT INTO `t_page` (id, title) VALUES ('article', 'Article');
+INSERT INTO `t_page` (id, title) VALUES ('articles', 'Articles');
 
 -- ----------------------------
 -- View structure for v_article

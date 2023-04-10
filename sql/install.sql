@@ -3,17 +3,16 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 -- Table structure for t_article
 -- ----------------------------
-DROP TABLE IF EXISTS `t_article`;
 CREATE TABLE `t_article` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `lang` varchar(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'hidden',
+  `lang` varchar(3) NOT NULL DEFAULT '' COMMENT 'hidden',
   `user_id` int unsigned DEFAULT NULL COMMENT 'none',
   `title` varchar(128) NOT NULL DEFAULT '',
   `description` varchar(512) NOT NULL DEFAULT '' COMMENT 'textarea',
   `category_id` tinyint unsigned DEFAULT NULL COMMENT 'select',
   `content` longtext NOT NULL COMMENT 'none',
-  `alias` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT 'none',
-  `status` enum('draft','public') CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'draft' COMMENT 'none',
+  `alias` varchar(128) NOT NULL DEFAULT '' COMMENT 'none',
+  `status` enum('draft','public') NOT NULL DEFAULT 'draft' COMMENT 'none',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'none',
   `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'none',
   `published_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'none',
@@ -29,7 +28,6 @@ CREATE TABLE `t_article` (
 -- ----------------------------
 -- Table structure for t_article_category
 -- ----------------------------
-DROP TABLE IF EXISTS `t_article_category`;
 CREATE TABLE `t_article_category` (
   `id` tinyint unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) NOT NULL DEFAULT '',
@@ -42,10 +40,9 @@ CREATE TABLE `t_article_category` (
 -- ----------------------------
 -- Table structure for t_article_history
 -- ----------------------------
-DROP TABLE IF EXISTS `t_article_history`;
 CREATE TABLE `t_article_history` (
   `article_id` int unsigned NOT NULL,
-  `article_lang` varchar(3) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `article_lang` varchar(3) NOT NULL DEFAULT '',
   `article_crc32` bigint NOT NULL,
   `article_content` longtext NOT NULL,
   `user_id` int unsigned DEFAULT NULL,

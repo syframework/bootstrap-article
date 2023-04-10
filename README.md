@@ -69,7 +69,7 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 			$components['ADD_FORM'] = new \Sy\Bootstrap\Component\Article\Add();
 		}
 
-		$this->__call('articles', ['CONTENT' => $components]);
+		$this->setContentVars($components);
 	}
 
 	/**
@@ -98,12 +98,12 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 		// Article content
 		$content = new \Sy\Bootstrap\Component\Article\Content($id, $lang);
 
-		$this->__call('article', ['CONTENT' => [
+		$this->setContentVars([
 			'ARTICLE_BREADCRUMB' => new \Sy\Bootstrap\Component\Article\Breadcrumb($id, $lang),
 			'ARTICLE_CONTENT'    => $content,
 			'SIDE'               => new \Sy\Bootstrap\Component\Article\Side($id, $article['category_id']),
 			'SHARE'              => new \Sy\Bootstrap\Component\Share\Buttons(PROJECT_URL . Url::build('page', 'article', ['id' => $id])),
-		]]);
+		]);
 	}
 ```
 

@@ -4,7 +4,7 @@
 	"type": "library",
 	"require": {
 		"php": ">=7",
-		"sy/bootstrap": "^0.4.0"
+		"sy/bootstrap": "*"
 	},
 	"license": "MIT",
 	"authors": [

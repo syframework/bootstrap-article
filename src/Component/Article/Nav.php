@@ -14,10 +14,12 @@ class Nav extends Navigation {
 	 */
 	private $default;
 
-	public function __construct($default) {
-		parent::__construct();
+	public function __construct($default, $attributes = []) {
+		parent::__construct(attributes: $attributes + [
+			'class' => 'nav nav-pills flex-column',
+			'id'    => 'articles-menu',
+		]);
 		$this->default = $default;
-
 		$this->mount(function () {
 			$this->init();
 		});
@@ -34,10 +36,6 @@ class Nav extends Navigation {
 		foreach ($categories as $category) {
 			$this->addMenu($this, (int)$category['id'], $this->_($category['name']));
 		}
-		$this->setAttributes([
-			'class' => 'nav nav-pills flex-column',
-			'id'    => 'articles-menu',
-		]);
 	}
 
 	private function addMenu($item, $id, $label, $sub = false) {

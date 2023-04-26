@@ -71,13 +71,24 @@ INSERT INTO `t_user_permission` VALUES ('article-status', 'Update article status
 INSERT INTO `t_user_permission` VALUES ('article-update', 'Update an article');
 
 -- ----------------------------
+-- Records of t_user_role
+-- ----------------------------
+INSERT INTO `t_user_role` VALUES ('article-admin', 'Article administrator');
+
+-- ----------------------------
 -- Records of t_user_role_has_permission
 -- ----------------------------
-INSERT INTO `t_user_role_has_permission` VALUES ('super-admin', 'article-create');
-INSERT INTO `t_user_role_has_permission` VALUES ('super-admin', 'article-delete');
-INSERT INTO `t_user_role_has_permission` VALUES ('super-admin', 'article-read');
-INSERT INTO `t_user_role_has_permission` VALUES ('super-admin', 'article-status');
-INSERT INTO `t_user_role_has_permission` VALUES ('super-admin', 'article-update');
+INSERT INTO `t_user_role_has_permission` VALUES ('article-admin', 'article-create');
+INSERT INTO `t_user_role_has_permission` VALUES ('article-admin', 'article-read');
+INSERT INTO `t_user_role_has_permission` VALUES ('article-admin', 'article-update');
+INSERT INTO `t_user_role_has_permission` VALUES ('article-admin', 'article-delete');
+INSERT INTO `t_user_role_has_permission` VALUES ('article-admin', 'article-status');
+
+INSERT INTO `t_user_role_has_permission` VALUES ('admin', 'article-create');
+INSERT INTO `t_user_role_has_permission` VALUES ('admin', 'article-read');
+INSERT INTO `t_user_role_has_permission` VALUES ('admin', 'article-update');
+INSERT INTO `t_user_role_has_permission` VALUES ('admin', 'article-delete');
+INSERT INTO `t_user_role_has_permission` VALUES ('admin', 'article-status');
 
 -- ----------------------------
 -- Records of t_page

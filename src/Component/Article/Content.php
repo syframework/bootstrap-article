@@ -116,18 +116,18 @@ class Content extends \Sy\Component\WebComponent {
 
 			$this->setComponent('UPDATE_ARTICLE_FORM', $updateForm);
 			$js->setVars([
-				'ID'              => $article['id'],
-				'CSRF'            => $service->user->getCsrfToken(),
-				'LANG'            => $article['lang'],
-				'URL'             => Url::build('api', 'article'),
-				'WEB_ROOT'        => WEB_ROOT,
-				'IMG_BROWSE'      => Url::build('editor', 'browse', ['id' => $this->id, 'item' => 'article', 'type' => 'image']),
-				'IMG_UPLOAD'      => Url::build('editor', 'upload', ['id' => $this->id, 'item' => 'article', 'type' => 'image']),
-				'FILE_BROWSE'     => Url::build('editor', 'browse', ['id' => $this->id, 'item' => 'article', 'type' => 'file']),
-				'FILE_UPLOAD'     => Url::build('editor', 'upload', ['id' => $this->id, 'item' => 'article', 'type' => 'file']),
-				'IMG_UPLOAD_AJAX' => Url::build('editor', 'upload', ['id' => $this->id, 'item' => 'article', 'type' => 'image', 'json' => '']),
-				'FILE_UPLOAD_AJAX'=> Url::build('editor', 'upload', ['id' => $this->id, 'item' => 'article', 'type' => 'file', 'json' => '']),
-				'CKEDITOR_ROOT'   => CKEDITOR_ROOT,
+				'ID'               => $article['id'],
+				'CSRF'             => $service->user->getCsrfToken(),
+				'LANG'             => $article['lang'],
+				'URL'              => Url::build('api', 'article'),
+				'WEB_ROOT'         => WEB_ROOT,
+				'IMG_BROWSE'       => Url::build('editor', 'article/browse', ['id' => $this->id, 'type' => 'image']),
+				'IMG_UPLOAD'       => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'image']),
+				'FILE_BROWSE'      => Url::build('editor', 'article/browse', ['id' => $this->id, 'type' => 'file']),
+				'FILE_UPLOAD'      => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'file']),
+				'IMG_UPLOAD_AJAX'  => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'image', 'json' => '']),
+				'FILE_UPLOAD_AJAX' => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'file', 'json' => '']),
+				'CKEDITOR_ROOT'    => CKEDITOR_ROOT,
 			]);
 			$js->setBlock('UPDATE_BLOCK');
 			$this->setBlock('UPDATE_BTN_BLOCK');

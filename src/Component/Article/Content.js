@@ -72,7 +72,7 @@ $(function() {
 			filebrowserWindowHeight: 400,
 			imageUploadUrl: '{IMG_UPLOAD_AJAX}',
 			uploadUrl: '{FILE_UPLOAD_AJAX}',
-			extraPlugins: 'sourcedialog,sycomponent,sywidget,tableresize,embedbase,embed,autoembed,uploadimage,uploadfile',
+			extraPlugins: 'sourcedialog,sycomponent,sywidget,tableresize,uploadimage,uploadfile',
 			allowedContent: {
 				$1: {
 					elements: CKEDITOR.dtd,

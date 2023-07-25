@@ -14,7 +14,7 @@ class Create extends \Sy\Bootstrap\Component\Form\Crud\Create {
 		// Title
 		$this->getField('title')->setAttributes([
 			'maxlength' => '128',
-			'required'  => 'required'
+			'required'  => 'required',
 		]);
 
 		// Description
@@ -35,10 +35,11 @@ class Create extends \Sy\Bootstrap\Component\Form\Crud\Create {
 			$user = $service->user->getCurrentUser();
 			$this->validatePost();
 			$fields = $this->post('form');
+			$fields = array_filter($fields);
 			$fields['user_id'] = $user->id;
 
 			// Remove newline in description
-			$fields['description'] = preg_replace('/\s+/', ' ', $fields['description']);
+			$fields['description'] = empty($fields['description']) ? '' : preg_replace('/\s+/', ' ', $fields['description']);
 
 			$fields['content'] = '<h1>' . (empty(trim($fields['title'])) ? $this->_('Title') . ' <small>' . $this->_('Optional subtitle') . '</small>' : $fields['title']) . '</h1>'
 				. '<p class="lead">' . (empty(trim($fields['description'])) ? $this->_('Lead paragraph') : $fields['description']) . '</p>'
@@ -50,17 +51,17 @@ class Create extends \Sy\Bootstrap\Component\Form\Crud\Create {
 
 			$id = $this->getService()->create($fields);
 			$this->setSuccess($this->_('Article created successfully'), \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $id, 'alias' => $fields['alias']]));
-		} catch(\Sy\Component\Html\Form\Exception $e) {
+		} catch (\Sy\Component\Html\Form\Exception $e) {
 			$this->logWarning($e);
 			if (is_null($this->getOption('error'))) {
 				$this->setError($this->_('Please fill the form correctly'));
 			}
 			$this->fill($_POST);
-		} catch(\Sy\Db\MySql\DuplicateEntryException $e) {
+		} catch (\Sy\Db\MySql\DuplicateEntryException $e) {
 			$this->logWarning($e);
 			$this->setError($this->_('Article already exists'));
 			$this->fill($_POST);
-		} catch(\Sy\Db\MySql\Exception $e) {
+		} catch (\Sy\Db\MySql\Exception $e) {
 			$this->logWarning($e);
 			$this->setError($this->_('Database error'));
 			$this->fill($_POST);

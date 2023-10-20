@@ -31,17 +31,17 @@ class ArticleConverter implements IConverter {
 		$id = $params['id'];
 		unset($params['id']);
 
+		$service = \Project\Service\Container::getInstance();
+		$lang = $params['lang'] ?? $service->lang->getLang();
+		unset($params['lang']);
+
 		if (!empty($params['alias'])) {
 			$url = WEB_ROOT . '/' . $this->prefix . $params['alias'];
 			unset($params['alias']);
 			return $url . (empty($params) ? '' : '?' . http_build_query($params));
 		}
 
-		$lang = $params['lang'] ?? \Sy\Translate\LangDetector::getInstance(LANG)->getLang();
-		unset($params['lang']);
-		$service = \Project\Service\Container::getInstance();
 		$article = $service->article->retrieve(['id' => $id, 'lang' => $lang]);
-		// if (empty($article['alias'])) $article = $service->article->retrieve(['id' => $id, 'lang' => LANG]);
 		if (empty($article['alias'])) return false;
 		return WEB_ROOT . '/' . $this->prefix . $article['alias'] . (empty($params) ? '' : '?' . http_build_query($params));
 	}

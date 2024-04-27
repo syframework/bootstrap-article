@@ -3,6 +3,7 @@ namespace Sy\Bootstrap\Component\Article;
 
 use Sy\Bootstrap\Service\Container;
 use Sy\Bootstrap\Lib\Url;
+use Sy\Bootstrap\Lib\Str;
 use Sy\Component\WebComponent;
 
 class Author extends WebComponent {
@@ -45,8 +46,8 @@ class Author extends WebComponent {
 		$user = $service->user->retrieve(['id' => $this->id]);
 
 		$this->setVars([
-			'AVATAR' => Url::avatar($user['id']),
-			'AUTHOR' => htmlentities(trim($user['firstname'] . ' ' . $user['lastname']), ENT_QUOTES, 'UTF-8'),
+			'AVATAR' => Url::avatar($user['email']),
+			'AUTHOR' => Str::escape($user['firstname'] . ' ' . $user['lastname']),
 			'DESCRIPTION' => $user['description'],
 			'FOOTER' => $this->footer,
 		]);

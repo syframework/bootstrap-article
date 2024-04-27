@@ -101,6 +101,7 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 		$this->setContentVars([
 			'ARTICLE_BREADCRUMB' => new \Sy\Bootstrap\Component\Article\Breadcrumb($id, $lang),
 			'ARTICLE_CONTENT'    => $content,
+			'ARTICLE_AUTHOR'     => new \Sy\Bootstrap\Component\Article\Author($article['user_id']),
 			'SIDE'               => new \Sy\Bootstrap\Component\Article\Side($id, $article['category_id']),
 			'SHARE'              => new \Sy\Bootstrap\Component\Share\Buttons(PROJECT_URL . Url::build('page', 'article', ['id' => $id])),
 		]);

@@ -80,7 +80,7 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 
 		// Redirection if no article id provided
 		$id = $this->get('id');
-		if (is_null($id)) throw new \Sy\Bootstrap\Application\PageNotFoundException();
+		if (is_null($id)) throw new \Sy\Bootstrap\Application\Page\NotFoundException();
 
 		// Detect language
 		$lang = \Sy\Translate\LangDetector::getInstance(LANG)->getLang();
@@ -93,7 +93,7 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 			$lang = LANG;
 			$article = $service->article->retrieve(['id' => $id, 'lang' => $lang]);
 		}
-		if (empty($article)) throw new \Sy\Bootstrap\Application\PageNotFoundException();
+		if (empty($article)) throw new \Sy\Bootstrap\Application\Page\NotFoundException();
 
 		// Article content
 		$content = new \Sy\Bootstrap\Component\Article\Content($id, $lang);

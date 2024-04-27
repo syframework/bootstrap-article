@@ -16,6 +16,10 @@ class Nav extends Navigation {
 	 */
 	private $default;
 
+	/**
+	 * @param string $default
+	 * @param array $attributes
+	 */
 	public function __construct($default, $attributes = []) {
 		parent::__construct(attributes: $attributes + [
 			'class' => 'nav nav-pills flex-column',
@@ -40,6 +44,12 @@ class Nav extends Navigation {
 		}
 	}
 
+	/**
+	 * @param Nav $item
+	 * @param int $id
+	 * @param string $label
+	 * @param boolean $sub
+	 */
 	private function addMenu($item, $id, $label, $sub = false) {
 		$service = \Project\Service\Container::getInstance();
 		$categories = $service->articleCategory->retrieveAll(['WHERE' => ['parent' => $id]]);

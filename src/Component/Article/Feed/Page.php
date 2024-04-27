@@ -3,20 +3,35 @@ namespace Sy\Bootstrap\Component\Article\Feed;
 
 class Page extends \Sy\Component\WebComponent {
 
+	/**
+	 * @var int
+	 */
 	private $page;
+
+	/**
+	 * @var int
+	 */
 	private $category;
+
+	/**
+	 * @var string
+	 */
 	private $q;
 
+	/**
+	 * @param int $page
+	 * @param int $category
+	 * @param string $q
+	 */
 	public function __construct($page, $category, $q) {
 		parent::__construct();
 		$this->page     = $page;
 		$this->category = $category;
 		$this->q        = $q;
-	}
 
-	public function __toString() {
-		$this->init();
-		return parent::__toString();
+		$this->mount(function () {
+			$this->init();
+		});
 	}
 
 	private function init() {

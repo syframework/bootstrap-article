@@ -3,7 +3,14 @@ namespace Sy\Bootstrap\Component\Article;
 
 class Feed extends \Sy\Bootstrap\Component\Feed {
 
+	/**
+	 * @var int
+	 */
 	private $category;
+
+	/**
+	 * @var string
+	 */
 	private $q;
 
 	public function __construct() {
@@ -42,7 +49,7 @@ class Feed extends \Sy\Bootstrap\Component\Feed {
 	public function getParams() {
 		return [
 			'category' => $this->category,
-			'q'        => $this->q
+			'q'        => $this->q,
 		];
 	}
 

@@ -3,22 +3,32 @@ namespace Sy\Bootstrap\Component\Article;
 
 class Side extends \Sy\Component\WebComponent {
 
+	/**
+	 * @var int
+	 */
 	private $articleId;
+
+	/**
+	 * @var int
+	 */
 	private $categoryId;
 
+	/**
+	 * @param int $articleId
+	 * @param int $categoryId
+	 */
 	public function __construct($articleId, $categoryId) {
 		parent::__construct();
 		$this->articleId  = $articleId;
 		$this->categoryId = $categoryId;
-	}
 
-	public function __toString() {
-		$this->init();
-		return parent::__toString();
+		$this->mount(function () {
+			$this->init();
+		});
 	}
 
 	private function init() {
-		$this->setTemplateContent('{CONTENT}');
+		$this->setTemplateContent('{CONTENT/}');
 
 		$lang = \Sy\Translate\LangDetector::getInstance(LANG)->getLang();
 

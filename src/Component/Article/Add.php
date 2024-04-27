@@ -14,7 +14,8 @@ class Add extends WebComponent {
 	private function init() {
 		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 		$this->setTemplateContent('{ADD}');
-		$lang = \Sy\Translate\LangDetector::getInstance(LANG)->getLang();
+		$service = \Project\Service\Container::getInstance();
+		$lang = $service->lang->getLang();
 		$create = new \Sy\Bootstrap\Component\Article\Create();
 		$create->initialize();
 		$create->getField('lang')->setAttribute('value', $lang);

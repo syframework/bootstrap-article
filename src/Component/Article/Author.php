@@ -7,20 +7,32 @@ use Sy\Component\WebComponent;
 
 class Author extends WebComponent {
 
+	/**
+	 * @var string
+	 */
 	private $id;
+
+	/**
+	 * @var string|\Sy\Component
+	 */
 	private $footer;
 
+	/**
+	 * @param string $id
+	 */
 	public function __construct($id) {
 		parent::__construct();
 		$this->id = $id;
 		$this->footer = '';
+
+		$this->mount(function () {
+			$this->init();
+		});
 	}
 
-	public function __toString() {
-		$this->init();
-		return parent::__toString();
-	}
-
+	/**
+	 * @param string|\Sy\Component $footer
+	 */
 	public function setFooter($footer) {
 		$this->footer = $footer;
 	}

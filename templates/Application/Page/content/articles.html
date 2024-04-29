@@ -25,20 +25,7 @@
 			</div>
 		</div>
 		<div class="col-md-3">
-			<div class="d-none d-lg-block">
-				<div class="mb-3">
-						{ADD_FORM/}
-				</div>
-
-				<div class="mb-3">
-					{SEARCH_FORM}
-				</div>
-
-				<h3>{"Categories"}</h3>
-
-				<div class="mb-3">
-					{NAV}
-				</div>
+			<div class="d-none d-lg-block" data-menu-articles>
 			</div>
 		</div>
 	</div>
@@ -48,19 +35,20 @@
 	<div class="offcanvas-header">
 		<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	</div>
-	<div class="offcanvas-body">
-		<div class="mb-3">
-			{ADD_FORM/}
-		</div>
-
-		<div class="mb-3">
-			{SEARCH_FORM}
-		</div>
-
-		<h3>{"Categories"}</h3>
-
-		<div class="mb-3">
-			{NAV}
-		</div>
+	<div class="offcanvas-body" data-menu-articles>
 	</div>
 </div>
+
+<template id="menu-articles">
+	{ADD_FORM/}
+
+	<div class="mb-3">
+		{SEARCH_FORM}
+	</div>
+
+	<h3 class="pt-3">{"Categories"}</h3>
+
+	<div class="mb-3">
+		{NAV}
+	</div>
+</template>

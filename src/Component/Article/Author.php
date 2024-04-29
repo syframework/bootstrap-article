@@ -40,7 +40,6 @@ class Author extends WebComponent {
 
 	private function init() {
 		$this->setTemplateFile(__DIR__ . '/Author.html');
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 
 		$service = Container::getInstance();
 		$user = $service->user->retrieve(['id' => $this->id]);

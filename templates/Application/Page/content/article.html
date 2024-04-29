@@ -10,11 +10,7 @@
 		<div class="offcanvas-header">
 			<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		</div>
-		<div class="offcanvas-body">
-			<h2>{"Must read..."}</h2>
-			<div>
-				{SIDE}
-			</div>
+		<div class="offcanvas-body" data-menu-article>
 		</div>
 	</div>
 
@@ -44,12 +40,15 @@
 		</div>
 
 		<div class="col-lg-4">
-			<div class="d-none d-lg-block">
-				<h2>{"Must read..."}</h2>
-				<div>
-					{SIDE}
-				</div>
+			<div class="d-none d-lg-block" data-menu-article>
 			</div>
 		</div>
 	</div>
 </div>
+
+<template id="menu-article">
+	<h2>{"Must read..."}</h2>
+	<div>
+		{SIDE}
+	</div>
+</template>

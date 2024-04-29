@@ -24,8 +24,6 @@ class Update extends \Sy\Bootstrap\Component\Form\Crud {
 	}
 
 	public function init() {
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
-
 		// Title
 		$this->getField('title')->setAttributes([
 			'maxlength' => '128',
@@ -47,6 +45,7 @@ class Update extends \Sy\Bootstrap\Component\Form\Crud {
 
 		// Article category
 		$select = $this->getField('category_id');
+		$select->setOption('label', $this->_('Category'));
 		$select->addOption('');
 		$service = \Project\Service\Container::getInstance();
 		$article = $service->article->retrieve(['id' => $this->id, 'lang' => $this->lang]);

@@ -30,7 +30,8 @@ class Side extends \Sy\Component\WebComponent {
 	private function init() {
 		$this->setTemplateContent('{CONTENT/}');
 
-		$lang = \Sy\Translate\LangDetector::getInstance(LANG)->getLang();
+		$service = \Project\Service\Container::getInstance();
+		$lang = $service->lang->getLang();
 
 		$articles = $this->getSideArticles($this->articleId, $lang, $this->categoryId);
 

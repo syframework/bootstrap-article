@@ -28,7 +28,6 @@ class Item extends \Sy\Component\WebComponent {
 	}
 
 	private function init() {
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 		$this->setTemplateFile(__DIR__ . '/Item.html');
 
 		$article = $this->article;

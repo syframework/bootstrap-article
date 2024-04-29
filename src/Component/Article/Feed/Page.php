@@ -35,7 +35,6 @@ class Page extends \Sy\Component\WebComponent {
 	}
 
 	private function init() {
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 		$this->setTemplateFile(__DIR__ . '/Page.html');
 
 		if (is_null($this->page)) {
@@ -52,7 +51,7 @@ class Page extends \Sy\Component\WebComponent {
 				'category_id' => $service->article->getCategories($this->category),
 				'q'           => $this->q,
 				'user_id'     => $user->id,
-				'lang'        => \Sy\Translate\LangDetector::getInstance(LANG)->getLang(),
+				'lang'        => $service->lang->getLang(),
 			];
 			if (!$user->hasPermission('article-read')) {
 				$condition['status'] = 'public';

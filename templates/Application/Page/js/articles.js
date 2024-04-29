@@ -9,4 +9,9 @@ window.addEventListener('load', () => {
 	});
 
 	observer.observe(document.getElementById('feed-articles'), { attributes: true, childList: true, subtree: true });
+
+	// Menu
+	document.querySelectorAll('div[data-menu-articles]').forEach((div) => {
+		div.appendChild(document.getElementById('menu-articles').content.cloneNode(true));
+	})
 });

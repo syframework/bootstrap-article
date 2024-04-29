@@ -3,24 +3,38 @@ namespace Sy\Bootstrap\Component\Article\Feed;
 
 class Page extends \Sy\Component\WebComponent {
 
+	/**
+	 * @var int
+	 */
 	private $page;
+
+	/**
+	 * @var int
+	 */
 	private $category;
+
+	/**
+	 * @var string
+	 */
 	private $q;
 
+	/**
+	 * @param int $page
+	 * @param int $category
+	 * @param string $q
+	 */
 	public function __construct($page, $category, $q) {
 		parent::__construct();
 		$this->page     = $page;
 		$this->category = $category;
 		$this->q        = $q;
-	}
 
-	public function __toString() {
-		$this->init();
-		return parent::__toString();
+		$this->mount(function () {
+			$this->init();
+		});
 	}
 
 	private function init() {
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 		$this->setTemplateFile(__DIR__ . '/Page.html');
 
 		if (is_null($this->page)) {
@@ -37,7 +51,7 @@ class Page extends \Sy\Component\WebComponent {
 				'category_id' => $service->article->getCategories($this->category),
 				'q'           => $this->q,
 				'user_id'     => $user->id,
-				'lang'        => \Sy\Translate\LangDetector::getInstance(LANG)->getLang(),
+				'lang'        => $service->lang->getLang(),
 			];
 			if (!$user->hasPermission('article-read')) {
 				$condition['status'] = 'public';

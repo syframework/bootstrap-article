@@ -3,23 +3,31 @@ namespace Sy\Bootstrap\Component\Article\Feed;
 
 class Item extends \Sy\Component\WebComponent {
 
+	/**
+	 * @var int
+	 */
 	private $page;
 
+	/**
+	 * @var array
+	 */
 	private $article;
 
+	/**
+	 * @param array $article
+	 * @param int $page
+	 */
 	public function __construct($article, $page = 0) {
 		parent::__construct();
 		$this->page    = $page;
 		$this->article = $article;
-	}
 
-	public function __toString() {
-		$this->init();
-		return parent::__toString();
+		$this->mount(function () {
+			$this->init();
+		});
 	}
 
 	private function init() {
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 		$this->setTemplateFile(__DIR__ . '/Item.html');
 
 		$article = $this->article;

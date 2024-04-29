@@ -17,7 +17,8 @@ class Article extends \Sy\Bootstrap\Service\Crud {
 
 	public function retrieve(array $pk) {
 		if (!isset($pk['lang'])) {
-			$pk['lang'] = \Sy\Translate\LangDetector::getInstance(LANG)->getLang();
+			$service = \Project\Service\Container::getInstance();
+			$pk['lang'] = $service->lang->getLang();
 		}
 		$article = parent::retrieve($pk);
 		if (!empty($article)) return $article;

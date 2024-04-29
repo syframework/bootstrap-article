@@ -1,14 +1,6 @@
-(function() {
-	$('[data-toggle=offcanvas]').on('touchstart click', function(e) {
-		$('.offcanvas-container').toggleClass('active');
-		e.stopPropagation();
-		e.preventDefault();
-	});
-
-	$('.offcanvas-right').on('touchstart click', function(e) {
-		if ($('.offcanvas-container').hasClass('active')) {
-			$('.offcanvas-container').toggleClass('active');
-			e.preventDefault();
-		}
-	});
-})();
+window.addEventListener('load', () => {
+	// Menu
+	document.querySelectorAll('div[data-menu-article]').forEach((div) => {
+		div.appendChild(document.getElementById('menu-article').content.cloneNode(true));
+	})
+});

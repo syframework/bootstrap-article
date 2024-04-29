@@ -6,5 +6,5 @@ class ArticleCategory extends Crud {
 	public function __construct() {
 		parent::__construct('articleCategory');
 	}
-	
+
 }

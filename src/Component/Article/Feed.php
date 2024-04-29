@@ -3,7 +3,14 @@ namespace Sy\Bootstrap\Component\Article;
 
 class Feed extends \Sy\Bootstrap\Component\Feed {
 
+	/**
+	 * @var int
+	 */
 	private $category;
+
+	/**
+	 * @var string
+	 */
 	private $q;
 
 	public function __construct() {
@@ -26,7 +33,7 @@ class Feed extends \Sy\Bootstrap\Component\Feed {
 				'category_id' => $service->article->getCategories($this->category),
 				'q'           => $this->q,
 				'user_id'     => $user->id,
-				'lang'        => \Sy\Translate\LangDetector::getInstance(LANG)->getLang(),
+				'lang'        => $service->lang->getLang(),
 			];
 			if (!$user->hasPermission('article-read')) {
 				$condition['status'] = 'public';
@@ -42,7 +49,7 @@ class Feed extends \Sy\Bootstrap\Component\Feed {
 	public function getParams() {
 		return [
 			'category' => $this->category,
-			'q'        => $this->q
+			'q'        => $this->q,
 		];
 	}
 

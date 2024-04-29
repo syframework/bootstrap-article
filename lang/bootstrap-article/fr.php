@@ -1,8 +1,6 @@
 <?php
 return [
 	// Article
-	'Articles' => 'Articles',
-	'Articles description' => "Articles description",
 	'New article' => 'Nouvel article',
 	'All articles' => 'Tous les articles',
 	'Article settings' => "Param&egrave;tres de l'article",
@@ -19,7 +17,8 @@ return [
 	'Article created successfully' => 'Article cr&eacute;e',
 	'Article already exists' => 'Cet article existe d&eacute;j&agrave;',
 	'All in %s' => 'Tous dans %s',
-	'Category id' => 'Cat&eacute;gorie',
+	'Categories' => 'Cat&eacute;gories',
+	'Category' => 'Cat&eacute;gorie',
 	'Published at' => 'Date de publication',
 	'Must read...' => 'A lire &eacute;galement...',
 	'Published' => 'Publi&eacute;',

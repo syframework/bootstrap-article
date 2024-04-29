@@ -13,20 +13,21 @@ class Breadcrumb extends \Sy\Component\WebComponent {
 	 */
 	private $lang;
 
+	/**
+	 * @param int $id Article id
+	 * @param string $lang Article language
+	 */
 	public function __construct($id, $lang) {
 		parent::__construct();
 		$this->id   = $id;
 		$this->lang = $lang;
-	}
 
-	public function __toString() {
-		$this->init();
-		return parent::__toString();
+		$this->mount(function () {
+			$this->init();
+		});
 	}
 
 	private function init() {
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
-
 		// Template
 		$this->setTemplateFile(__DIR__ . '/Breadcrumb.html');
 

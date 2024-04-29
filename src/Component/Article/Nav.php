@@ -4,6 +4,8 @@ namespace Sy\Bootstrap\Component\Article;
 use Sy\Component\Html\Link;
 use Sy\Component\Html\Navigation;
 use Sy\Component\Html\Navigation\Item;
+use Sy\Bootstrap\Component\Icon;
+use Sy\Component\WebComponent;
 
 class Nav extends Navigation {
 
@@ -14,6 +16,10 @@ class Nav extends Navigation {
 	 */
 	private $default;
 
+	/**
+	 * @param string $default
+	 * @param array $attributes
+	 */
 	public function __construct($default, $attributes = []) {
 		parent::__construct(attributes: $attributes + [
 			'class' => 'nav nav-pills flex-column',
@@ -38,14 +44,20 @@ class Nav extends Navigation {
 		}
 	}
 
+	/**
+	 * @param Nav $item
+	 * @param int $id
+	 * @param string $label
+	 * @param boolean $sub
+	 */
 	private function addMenu($item, $id, $label, $sub = false) {
 		$service = \Project\Service\Container::getInstance();
 		$categories = $service->articleCategory->retrieveAll(['WHERE' => ['parent' => $id]]);
 		if (empty($categories)) {
 			$icon = '';
-			if ($sub) $icon = '<span class="fas fa-chevron-right"></span> ';
+			if ($sub) $icon = new Icon('chevron-right');
 			$active = $id === (int)$this->get('category') ? 'active' : '';
-			$i = $item->addItem(new Link($icon . $this->_($label), \Sy\Bootstrap\Lib\Url::build('page', $this->default, ['category' => $id]), ['class' => "nav-link $active"]));
+			$i = $item->addItem(new Link(WebComponent::concat($icon, ' ', $this->_($label)), \Sy\Bootstrap\Lib\Url::build('page', $this->default, ['category' => $id]), ['class' => "nav-link $active"]));
 			$i->addClass('nav-item');
 			return $i;
 		} else {
@@ -61,7 +73,7 @@ class Nav extends Navigation {
 			$list->addElement(
 				new Item(
 					new Link(
-						'<span class="fas fa-chevron-right"></span> ' . sprintf($this->_('All in %s'), $this->_($label)),
+						WebComponent::concat(new Icon('chevron-right'), ' ', sprintf($this->_('All in %s')), $this->_($label)),
 						\Sy\Bootstrap\Lib\Url::build('page', $this->default, ['category' => $id]),
 						['class' => "nav-link $active"]
 					)

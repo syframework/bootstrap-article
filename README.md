@@ -66,7 +66,7 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 		// Add article modal button
 		$service = \Project\Service\Container::getInstance();
 		if ($service->user->getCurrentUser()->hasPermission('article-create')) {
-			$components['ADD_FORM'] = new \Sy\Bootstrap\Component\Article\Add();
+			$components['ADD_FORM'] = new \Sy\Bootstrap\Component\Article\Add(['class' => 'mb-3']);
 		}
 
 		$this->setContentVars($components);
@@ -80,20 +80,20 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 
 		// Redirection if no article id provided
 		$id = $this->get('id');
-		if (is_null($id)) throw new \Sy\Bootstrap\Application\PageNotFoundException();
+		if (is_null($id)) throw new \Sy\Bootstrap\Application\Page\NotFoundException();
 
 		// Detect language
-		$lang = \Sy\Translate\LangDetector::getInstance(LANG)->getLang();
+		$service = \Project\Service\Container::getInstance();
+		$lang = $service->lang->getLang();
 
 		// Retrieve article
-		$service = \Project\Service\Container::getInstance();
 		$article = $service->article->retrieve(['id' => $id, 'lang' => $lang]);
 
 		if (empty($article)) {
 			$lang = LANG;
 			$article = $service->article->retrieve(['id' => $id, 'lang' => $lang]);
 		}
-		if (empty($article)) throw new \Sy\Bootstrap\Application\PageNotFoundException();
+		if (empty($article)) throw new \Sy\Bootstrap\Application\Page\NotFoundException();
 
 		// Article content
 		$content = new \Sy\Bootstrap\Component\Article\Content($id, $lang);
@@ -101,6 +101,7 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 		$this->setContentVars([
 			'ARTICLE_BREADCRUMB' => new \Sy\Bootstrap\Component\Article\Breadcrumb($id, $lang),
 			'ARTICLE_CONTENT'    => $content,
+			'ARTICLE_AUTHOR'     => new \Sy\Bootstrap\Component\Article\Author($article['user_id']),
 			'SIDE'               => new \Sy\Bootstrap\Component\Article\Side($id, $article['category_id']),
 			'SHARE'              => new \Sy\Bootstrap\Component\Share\Buttons(PROJECT_URL . Url::build('page', 'article', ['id' => $id])),
 		]);

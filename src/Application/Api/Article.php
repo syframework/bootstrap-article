@@ -65,7 +65,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 				return $this->requestError([
 					'status'  => 'ko',
 					'message' => $this->_('You have taken too long to submit the form please try again'),
-					'csrf'    => $service->user->getCsrfToken()
+					'csrf'    => $service->user->getCsrfToken(),
 				]);
 			}
 			if (is_null($id) or is_null($lang) or is_null($content)) $this->requestError();

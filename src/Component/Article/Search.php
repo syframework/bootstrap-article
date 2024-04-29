@@ -3,17 +3,17 @@ namespace Sy\Bootstrap\Component\Article;
 
 class Search extends \Sy\Component\WebComponent {
 
-	public function __toString() {
-		$this->init();
-		return parent::__toString();
+	public function __construct() {
+		$this->mount(function () {
+			$this->init();
+		});
 	}
 
 	private function init() {
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
 		$this->setTemplateFile(__DIR__ . '/Search.html');
 		$this->setVars([
 			'ACTION' => $_SERVER['REQUEST_URI'],
-			'VALUE'  => $this->get('q', '')
+			'VALUE'  => $this->get('q', ''),
 		]);
 	}
 

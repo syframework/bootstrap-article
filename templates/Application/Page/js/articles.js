@@ -1,14 +1,17 @@
-(function() {
-	$('[data-toggle=offcanvas]').on('touchstart click', function(e) {
-		$('.offcanvas-container').toggleClass('active');
-		e.stopPropagation();
-		e.preventDefault();
+import Masonry from 'https://cdn.jsdelivr.net/npm/masonry-layout/+esm';
+
+window.addEventListener('load', () => {
+	const msnry = new Masonry('#feed-articles');
+	msnry.layout();
+
+	let observer = new MutationObserver(() => {
+		msnry.layout();
 	});
 
-	$('.offcanvas-right').on('touchstart click', function(e) {
-		if ($('.offcanvas-container').hasClass('active')) {
-			$('.offcanvas-container').toggleClass('active');
-			e.preventDefault();
-		}
-	});
-})();
+	observer.observe(document.getElementById('feed-articles'), { attributes: true, childList: true, subtree: true });
+
+	// Menu
+	document.querySelectorAll('div[data-menu-articles]').forEach((div) => {
+		div.appendChild(document.getElementById('menu-articles').content.cloneNode(true));
+	})
+});

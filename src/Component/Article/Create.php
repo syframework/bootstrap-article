@@ -8,8 +8,9 @@ class Create extends \Sy\Bootstrap\Component\Form\Crud\Create {
 	}
 
 	public function init() {
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
-		parent::init();
+		// Lang
+		$service = \Project\Service\Container::getInstance();
+		$this->getField('lang')->setAttribute('value', $service->lang->getLang());
 
 		// Title
 		$this->getField('title')->setAttributes([
@@ -21,8 +22,8 @@ class Create extends \Sy\Bootstrap\Component\Form\Crud\Create {
 		$this->getField('description')->setAttribute('maxlength', '256');
 
 		// Article category
-		$service = \Project\Service\Container::getInstance();
 		$select = $this->getField('category_id');
+		$select->setOption('label', $this->_('Category'));
 		$select->addOption('');
 		foreach ($service->articleCategory->retrieveAll() as $category) {
 			$select->addOption((empty($category['parent']) ? '' : ' - ') . $this->_($category['name']), $category['id']);

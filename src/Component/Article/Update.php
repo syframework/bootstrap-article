@@ -3,24 +3,31 @@ namespace Sy\Bootstrap\Component\Article;
 
 class Update extends \Sy\Bootstrap\Component\Form\Crud {
 
+	/**
+	 * @var int
+	 */
 	private $id;
+
+	/**
+	 * @var string
+	 */
 	private $lang;
 
+	/**
+	 * @param int $id Article id
+	 * @param string $lang Article language
+	 */
 	public function __construct($id, $lang) {
+		parent::__construct('article', ['id' => $id, 'lang' => $lang]);
 		$this->id = $id;
 		$this->lang = $lang;
-		parent::__construct('article', ['id' => $id, 'lang' => $lang]);
 	}
 
 	public function init() {
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
-
-		parent::initInputs();
-
 		// Title
 		$this->getField('title')->setAttributes([
 			'maxlength' => '128',
-			'required'  => 'required'
+			'required'  => 'required',
 		]);
 		$this->getField('title')->addValidator(function($value) {
 			if (strlen($value) <= 128) return true;
@@ -38,6 +45,7 @@ class Update extends \Sy\Bootstrap\Component\Form\Crud {
 
 		// Article category
 		$select = $this->getField('category_id');
+		$select->setOption('label', $this->_('Category'));
 		$select->addOption('');
 		$service = \Project\Service\Container::getInstance();
 		$article = $service->article->retrieve(['id' => $this->id, 'lang' => $this->lang]);
@@ -65,7 +73,6 @@ class Update extends \Sy\Bootstrap\Component\Form\Crud {
 		if ($service->user->getCurrentUser()->hasPermission('article-status')) {
 			$this->addDateTime(['name' => 'form[published_at]', 'value' => $article['published_at']], ['label' => 'Published at']);
 		}
-		parent::initButton();
 	}
 
 	public function submitAction() {
@@ -91,17 +98,17 @@ class Update extends \Sy\Bootstrap\Component\Form\Crud {
 
 			$this->updateRow($fields);
 			$this->setSuccess($this->_('Saved'), \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $this->id]));
-		} catch(\Sy\Component\Html\Form\Exception $e) {
+		} catch (\Sy\Component\Html\Form\Exception $e) {
 			$this->logWarning($e);
 			if (is_null($this->getOption('error'))) {
 				$this->setError($this->_('Please fill the form correctly'));
 			}
 			$this->fill($_POST);
-		} catch(\Sy\Bootstrap\Lib\Crud\DuplicateEntryException $e) {
+		} catch (\Sy\Db\MySql\DuplicateEntryException $e) {
 			$this->logWarning($e);
 			$this->setError($this->_('Alias already exists'));
 			$this->fill($_POST);
-		} catch(\Sy\Bootstrap\Lib\Crud\Exception $e) {
+		} catch (\Sy\Db\MySql\Exception $e) {
 			$this->logWarning($e);
 			$this->setError($this->_('Database error'));
 			$this->fill($_POST);

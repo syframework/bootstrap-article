@@ -15,6 +15,10 @@ class Content extends \Sy\Component\WebComponent {
 	 */
 	private $lang;
 
+	/**
+	 * @param int $id Article id
+	 * @param string $lang Article language
+	 */
 	public function __construct($id, $lang) {
 		parent::__construct();
 		$this->id   = $id;
@@ -59,7 +63,7 @@ class Content extends \Sy\Component\WebComponent {
 		// Check read permission
 		if ($article['status'] === 'draft') {
 			if ($user->id !== $article['user_id'] and !$user->hasPermission('article-read')) {
-				$this->redirect(Url::build('page', $this->default));
+				throw new \Sy\Bootstrap\Application\Page\NotFoundException();
 			}
 		}
 
@@ -112,9 +116,10 @@ class Content extends \Sy\Component\WebComponent {
 		// Update
 		if ($user->hasPermission('article-update') or $user->id === $article['user_id']) {
 			$this->addJsLink(CKEDITOR_JS);
-			$updateForm = new \Sy\Bootstrap\Component\Article\Update($this->id, $this->lang);
 
-			$this->setComponent('UPDATE_ARTICLE_FORM', $updateForm);
+			$updateForm = new \Sy\Bootstrap\Component\Article\Update($this->id, $this->lang);
+			$this->setVar('UPDATE_ARTICLE_FORM', $updateForm);
+
 			$js->setVars([
 				'ID'               => $article['id'],
 				'CSRF'             => $service->user->getCsrfToken(),

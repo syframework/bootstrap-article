@@ -56,7 +56,6 @@
 		});
 	}
 
-	// $('#btn-article-update-start').click(function(e) {
 	document.getElementById('btn-article-update-start').addEventListener('click', function (e) {
 		e.preventDefault();
 		if (CKEDITOR.instances['article-content']) return;
@@ -127,8 +126,8 @@
 						justifyClasses: [ 'text-left', 'text-center', 'text-right', 'text-justify' ],
 						disallowedContent: 'script; *[on*]; img{width,height}',
 						removePlugins: 'about,exportpdf,bidi,font,forms,language,pagebreak,newpage,wsc,scayt,flash,smiley',
-						templates: 'websyte',
-						templates_files: ['{CKEDITOR_ROOT}/templates/{LANG}/article.js'],
+						templates: 'bootstrap-article',
+						templates_files: ['{CKEDITOR_ROOT}/templates/article/js/{LANG}.js'],
 						on: {
 							instanceReady: function (ev) {
 								this.dataProcessor.writer.setRules('p', {

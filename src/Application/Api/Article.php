@@ -79,7 +79,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 				'article_content' => $content,
 			], [
 				'user_id'    => $service->user->getCurrentUser()->id,
-				'updated_at' => date('Y-m-d H:i:s')
+				'updated_at' => date('Y-m-d H:i:s'),
 			]);
 
 			// Update article content
@@ -94,7 +94,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 		} catch (\Sy\Db\MySql\Exception $e) {
 			return $this->serverError([
 				'status' => 'ko',
-				'message' => $this->_('Database error')
+				'message' => $this->_('Database error'),
 			]);
 		}
 	}

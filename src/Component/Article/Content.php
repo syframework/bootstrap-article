@@ -2,6 +2,7 @@
 namespace Sy\Bootstrap\Component\Article;
 
 use Sy\Bootstrap\Lib\Url;
+use Sy\Bootstrap\Lib\Str;
 
 class Content extends \Sy\Component\WebComponent {
 
@@ -104,7 +105,7 @@ class Content extends \Sy\Component\WebComponent {
 			'PROJECT'      => PROJECT,
 			'PROJECT_URL'  => PROJECT_URL,
 			'ARTICLE_PAGE' => Url::build('page', 'articles'),
-			'AUTHOR'       => $this->_(\Sy\Bootstrap\Lib\Str::convertName($article['user_firstname'] . ' ' . $article['user_lastname'])),
+			'AUTHOR'       => $this->_(Str::convertName($article['user_firstname'] . ' ' . $article['user_lastname'])),
 			'PUBLISHED_AT' => $publishedAt->f('yyyy-MM-dd'),
 			'UPDATED_AT'   => $updatedAt->f('yyyy-MM-dd'),
 			'PHUMANDATE'   => $publishedAt->humanTimeDiff(),
@@ -146,7 +147,7 @@ class Content extends \Sy\Component\WebComponent {
 			$this->setComponent('DELETE_ARTICLE_FORM', $deleteForm);
 			$this->setBlock('DELETE_BTN_BLOCK');
 			$js->setVars([
-				'CONFIRM_DELETE' => $this->_('Are you sure to delete this article?'),
+				'CONFIRM_DELETE' => Str::escape($this->_('Are you sure to delete this article?')),
 				'DELETE_FORM_ID' => 'delete-' . $this->id,
 			]);
 			$js->setBlock('DELETE_BLOCK');

@@ -73,7 +73,7 @@ class Nav extends Navigation {
 			$list->addElement(
 				new Item(
 					new Link(
-						WebComponent::concat(new Icon('chevron-right'), ' ', sprintf($this->_('All in %s')), $this->_($label)),
+						WebComponent::concat(new Icon('chevron-right'), ' ', sprintf($this->_('All in %s'), $this->_($label))),
 						\Sy\Bootstrap\Lib\Url::build('page', $this->default, ['category' => $id]),
 						['class' => "nav-link $active"]
 					)

@@ -142,15 +142,19 @@ class Content extends \Sy\Component\WebComponent {
 
 		// Delete
 		if ($user->hasPermission('article-delete') or $user->id === $article['user_id']) {
-			$deleteForm = new \Sy\Bootstrap\Component\Form\Crud\Delete('article', ['id' => $this->id, 'lang' => $this->lang]);
-			$deleteForm->setAttribute('id', 'delete-' . $this->id);
-			$this->setComponent('DELETE_ARTICLE_FORM', $deleteForm);
-			$this->setBlock('DELETE_BTN_BLOCK');
-			$js->setVars([
-				'CONFIRM_DELETE' => Str::escape($this->_('Are you sure to delete this article?')),
-				'DELETE_FORM_ID' => 'delete-' . $this->id,
-			]);
-			$js->setBlock('DELETE_BLOCK');
+			$this->setComponent('DELETE_ARTICLE_FORM', new \Sy\Bootstrap\Component\Form\Crud\Delete(
+				'article',
+				['id' => $this->id, 'lang' => $this->lang],
+				[
+					'button-attributes' => [
+						'class' => 'btn-circle',
+						'data-bs-title' => $this->_('Delete article'),
+						'data-bs-placement' => $this->_('left'),
+					],
+					'confirm' => 'Are you sure to delete this article?',
+					'redirection' => Url::build('page', 'articles'),
+				]
+			));
 		}
 
 		// Add javascript code

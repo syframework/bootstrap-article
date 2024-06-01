@@ -51,21 +51,19 @@ class Create extends \Sy\Bootstrap\Component\Form\Crud\Create {
 			$fields['alias'] = \Sy\Bootstrap\Lib\Str::slugify($title);
 
 			$id = $this->getService()->create($fields);
-			$this->setSuccess($this->_('Article created successfully'), \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $id, 'alias' => $fields['alias']]));
+
+			return $this->jsonSuccess('Article created successfully', [
+				'redirection' => \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $id, 'alias' => $fields['alias']]),
+			]);
 		} catch (\Sy\Component\Html\Form\Exception $e) {
 			$this->logWarning($e);
-			if (is_null($this->getOption('error'))) {
-				$this->setError($this->_('Please fill the form correctly'));
-			}
-			$this->fill($_POST);
+			return $this->jsonError($this->getOption('error') ?? 'Please fill the form correctly');
 		} catch (\Sy\Db\MySql\DuplicateEntryException $e) {
 			$this->logWarning($e);
-			$this->setError($this->_('Article already exists'));
-			$this->fill($_POST);
+			return $this->jsonError('Article already exists');
 		} catch (\Sy\Db\MySql\Exception $e) {
 			$this->logWarning($e);
-			$this->setError($this->_('Database error'));
-			$this->fill($_POST);
+			return $this->jsonError('Database error');
 		}
 	}
 

@@ -223,13 +223,5 @@
 		updateModal.querySelector('input[type="text"]').focus();
 	});
 <!-- END UPDATE_BLOCK -->
-<!-- BEGIN DELETE_BLOCK -->
-	document.getElementById('btn-article-delete').addEventListener('click', function (e) {
-		e.preventDefault();
-		if (confirm((new DOMParser).parseFromString('{CONFIRM_DELETE}', 'text/html').documentElement.textContent)) {
-			document.getElementById('{DELETE_FORM_ID}').submit();
-		}
-	});
-<!-- END DELETE_BLOCK -->
 
 })();

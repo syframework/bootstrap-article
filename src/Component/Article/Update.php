@@ -97,21 +97,19 @@ class Update extends \Sy\Bootstrap\Component\Form\Crud {
 			$fields['published_at'] = $date->f("yyyy-MM-dd HH:mm");
 
 			$this->updateRow($fields);
-			$this->setSuccess($this->_('Saved'), \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $this->id]));
+
+			return $this->jsonSuccess('Saved', [
+				'redirection' => \Sy\Bootstrap\Lib\Url::build('page', 'article', ['id' => $this->id]),
+			]);
 		} catch (\Sy\Component\Html\Form\Exception $e) {
 			$this->logWarning($e);
-			if (is_null($this->getOption('error'))) {
-				$this->setError($this->_('Please fill the form correctly'));
-			}
-			$this->fill($_POST);
+			return $this->jsonError($this->getOption('error') ?? 'Please fill the form correctly');
 		} catch (\Sy\Db\MySql\DuplicateEntryException $e) {
 			$this->logWarning($e);
-			$this->setError($this->_('Alias already exists'));
-			$this->fill($_POST);
+			return $this->jsonError('Alias already exists');
 		} catch (\Sy\Db\MySql\Exception $e) {
 			$this->logWarning($e);
-			$this->setError($this->_('Database error'));
-			$this->fill($_POST);
+			return $this->jsonError('Database error');
 		}
 	}
 

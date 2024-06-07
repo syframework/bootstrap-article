@@ -52,6 +52,7 @@ class Content extends \Sy\Component\WebComponent {
 	}
 
 	private function init() {
+		$this->addTranslator(__DIR__ . '/../../../lang/bootstrap-article');
 		// Javascript code
 		$js = new \Sy\Component();
 		$js->setTemplateFile(__DIR__ . '/Content.js');

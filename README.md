@@ -55,8 +55,6 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 	 * List of all articles page
 	 */
 	public function articlesAction() {
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
-
 		$components = [
 			'NAV'         => new \Sy\Bootstrap\Component\Article\Nav('articles'),
 			'SEARCH_FORM' => new \Sy\Bootstrap\Component\Article\Search(),
@@ -76,8 +74,6 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 	 * Article page
 	 */
 	public function articleAction() {
-		$this->addTranslator(LANG_DIR . '/bootstrap-article');
-
 		// Redirection if no article id provided
 		$id = $this->get('id');
 		if (is_null($id)) throw new \Sy\Bootstrap\Application\Page\NotFoundException();

@@ -28,6 +28,7 @@ class Side extends \Sy\Component\WebComponent {
 	}
 
 	private function init() {
+		$this->addTranslator(__DIR__ . '/../../../lang/bootstrap-article');
 		$this->setTemplateContent('{CONTENT/}');
 
 		$service = \Project\Service\Container::getInstance();

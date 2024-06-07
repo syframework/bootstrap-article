@@ -13,6 +13,7 @@ class Add extends Element {
 	}
 
 	private function init() {
+		$this->addTranslator(__DIR__ . '/../../../lang/bootstrap-article');
 		$add = new \Sy\Bootstrap\Component\Modal\Button('addArticleModal', $this->_('New article'), 'plus');
 		$add->getDialog()->setBody(new \Sy\Bootstrap\Component\Article\Create());
 		$this->setContent($add);

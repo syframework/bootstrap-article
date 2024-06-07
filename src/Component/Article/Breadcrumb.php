@@ -28,6 +28,7 @@ class Breadcrumb extends \Sy\Component\WebComponent {
 	}
 
 	private function init() {
+		$this->addTranslator(__DIR__ . '/../../../lang/bootstrap-article');
 		// Template
 		$this->setTemplateFile(__DIR__ . '/Breadcrumb.html');
 

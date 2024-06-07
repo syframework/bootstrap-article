@@ -32,6 +32,7 @@ class Nav extends Navigation {
 	}
 
 	private function init() {
+		$this->addTranslator(__DIR__ . '/../../../lang/bootstrap-article');
 		$service = \Project\Service\Container::getInstance();
 
 		$categories = $service->articleCategory->retrieveAll(['WHERE' => ['parent' => null]]);

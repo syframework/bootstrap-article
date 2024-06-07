@@ -10,6 +10,7 @@ class Search extends \Sy\Component\WebComponent {
 	}
 
 	private function init() {
+		$this->addTranslator(__DIR__ . '/../../../lang/bootstrap-article');
 		$this->setTemplateFile(__DIR__ . '/Search.html');
 		$this->setVars([
 			'ACTION' => $_SERVER['REQUEST_URI'],

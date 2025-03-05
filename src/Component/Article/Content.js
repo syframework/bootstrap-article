@@ -1,9 +1,9 @@
 (function () {
 
 <!-- BEGIN UPDATE_BLOCK -->
-	var changed = false;
-	var content = '';
-	var csrf = "{CSRF}";
+	let changed = false;
+	let content = '';
+	let csrf = "{CSRF}";
 
 	CKEDITOR.dtd.$removeEmpty['span'] = false;
 	CKEDITOR.dtd.$removeEmpty['i'] = false;
@@ -23,7 +23,7 @@
 			headers: {
 				"Content-Type": "application/x-www-form-urlencoded"
 			},
-			body: Object.keys(data).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(data[key])}`).join("&")
+			body: new URLSearchParams(data)
 		})
 		.then(response => response.json())
 		.then(res => {
@@ -63,7 +63,7 @@
 		const params = {
 			id: "{ID}",
 			lang: "{LANG}",
-			ts: new Date().getTime()
+			ts: Date.now()
 		};
 		const url = new URL('{URL}', window.location.origin);
 		Object.entries(params).forEach(([key, value]) => {

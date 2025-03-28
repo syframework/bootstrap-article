@@ -46,29 +46,6 @@ class Content extends \Sy\Component\WebComponent {
 			$this->setVar('DESCRIPTION', $description);
 		}
 
-		$this->mount(function () {
-			$this->init();
-		});
-	}
-
-	private function init() {
-		$this->addTranslator(__DIR__ . '/../../../lang/bootstrap-article');
-		// Javascript code
-		$js = new \Sy\Component();
-		$js->setTemplateFile(__DIR__ . '/Content.js');
-
-		// Retrieve article
-		$service = \Project\Service\Container::getInstance();
-		$article = $service->article->retrieve(['id' => $this->id, 'lang' => $this->lang]);
-
-		$user = $service->user->getCurrentUser();
-		// Check read permission
-		if ($article['status'] === 'draft') {
-			if ($user->id !== $article['user_id'] and !$user->hasPermission('article-read')) {
-				throw new \Sy\Bootstrap\Application\Page\NotFoundException();
-			}
-		}
-
 		// Set meta url and type
 		\Sy\Bootstrap\Lib\HeadData::addMeta('og:type', 'article');
 		\Sy\Bootstrap\Lib\HeadData::addMeta('og:url', PROJECT_URL . Url::build('page', 'article', ['id' => $article['id']]));
@@ -93,6 +70,29 @@ class Content extends \Sy\Component\WebComponent {
 				\Sy\Bootstrap\Lib\HeadData::addMeta('og:image', $images[0]);
 				$this->setVar('IMAGE', implode('","', $images));
 				$this->setBlock('IMAGE_BLOCK');
+			}
+		}
+
+		$this->mount(function () {
+			$this->init();
+		});
+	}
+
+	private function init() {
+		$this->addTranslator(__DIR__ . '/../../../lang/bootstrap-article');
+		// Javascript code
+		$js = new \Sy\Component();
+		$js->setTemplateFile(__DIR__ . '/Content.js');
+
+		// Retrieve article
+		$service = \Project\Service\Container::getInstance();
+		$article = $service->article->retrieve(['id' => $this->id, 'lang' => $this->lang]);
+
+		$user = $service->user->getCurrentUser();
+		// Check read permission
+		if ($article['status'] === 'draft') {
+			if ($user->id !== $article['user_id'] and !$user->hasPermission('article-read')) {
+				throw new \Sy\Bootstrap\Application\Page\NotFoundException();
 			}
 		}
 

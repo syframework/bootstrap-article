@@ -6,6 +6,9 @@ use Sy\Bootstrap\Lib\Str;
 
 class Content extends \Sy\Component\WebComponent {
 
+	private const CKEDITOR_JS = 'https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js';
+	private const CKEDITOR_ROOT = WEB_ROOT . '/assets/ckeditor';
+
 	/**
 	 * @var int
 	 */
@@ -118,7 +121,7 @@ class Content extends \Sy\Component\WebComponent {
 
 		// Update
 		if ($user->hasPermission('article-update') or $user->id === $article['user_id']) {
-			$this->addJsLink(CKEDITOR_JS);
+			$this->addJsLink(Content::CKEDITOR_JS);
 
 			$updateForm = new \Sy\Bootstrap\Component\Article\Update($this->id, $this->lang);
 			$this->setVar('UPDATE_ARTICLE_FORM', $updateForm);
@@ -135,7 +138,7 @@ class Content extends \Sy\Component\WebComponent {
 				'FILE_UPLOAD'      => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'file']),
 				'IMG_UPLOAD_AJAX'  => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'image', 'json' => '']),
 				'FILE_UPLOAD_AJAX' => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'file', 'json' => '']),
-				'CKEDITOR_ROOT'    => CKEDITOR_ROOT,
+				'CKEDITOR_ROOT'    => Content::CKEDITOR_ROOT,
 			]);
 			$js->setBlock('UPDATE_BLOCK');
 			$this->setBlock('UPDATE_BTN_BLOCK');
@@ -161,6 +164,13 @@ class Content extends \Sy\Component\WebComponent {
 
 		// Add javascript code
 		$this->addJsCode($js);
+
+		// Hide ckeditor warning message
+		$this->addCssCode('
+			.cke_notification_warning {
+				display: none;
+			}
+		');
 	}
 
 }

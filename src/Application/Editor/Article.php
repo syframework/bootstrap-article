@@ -1,7 +1,7 @@
 <?php
 namespace Sy\Bootstrap\Application\Editor;
 
-use Sy\Bootstrap\Lib\Str;
+use Sy\Bootstrap\Lib\Image;
 
 class Article extends \Sy\Bootstrap\Component\Api {
 
@@ -25,64 +25,34 @@ class Article extends \Sy\Bootstrap\Component\Api {
 	 * CKEditor Upload
 	 */
 	public function uploadAction() {
-		$func = $this->get('CKEditorFuncNum');
-		$id   = $this->get('id');
-		$item = str_replace('_', '-', Str::camlToSnake($this->action));
-		$type = $this->get('type');
+		$result = $this->processUpload();
 
-		$url = '';
-		$message = 'error';
-
-		try {
-			if (!is_null($id)) {
-				$parts = pathinfo($_FILES['upload']['name']);
-				switch ($type) {
-					case 'image':
-						$checkfile = '\Sy\Bootstrap\Lib\Image::isImage';
-						break;
-					default:
-						$checkfile = null;
-						break;
-				}
-				$file = Str::slugify($parts['filename']) . '.' . strtolower($parts['extension']);
-				\Sy\Bootstrap\Lib\Upload::proceed(UPLOAD_DIR . "/$item/$type/$id/$file", 'upload', $checkfile);
-
-				// resize image
-				if ($type === 'image') {
-					list($w, $h) = getimagesize(UPLOAD_DIR . "/$item/$type/$id/$file");
-					$max = 900;
-					if (max([$w, $h]) > $max) {
-						if ($h > $w) {
-							$w = $max * $w / $h;
-							$h = $max;
-						} else {
-							$h = $max * $h / $w;
-							$w = $max;
-						}
-					}
-					\Sy\Bootstrap\Lib\Image::resize(UPLOAD_DIR . "/$item/$type/$id/$file", $w, $h);
-				}
-
-				$url = UPLOAD_ROOT . "/$item/$type/$id/$file";
-				$message = '';
-			}
-		} catch (\Sy\Bootstrap\Lib\Upload\Exception $e) {
-			$message = $e->getMessage();
+		if (empty($result['message']) and $result['type'] === 'image' and !empty($result['path'])) {
+			$this->resizeImage($result['path']);
 		}
 
-		// Ckeditor 4.9+ works only json response
-		if (isset($_GET['json'])) {
-			$res = [
-				'uploaded' => (empty($message) ? 1 : 0),
-				'filename' => $file,
-				'url'      => $url,
-			];
+		return $this->uploadResponse($result);
+	}
 
-			if (!empty($message)) $res['error']['message'] = $message;
-			return $this->ok($res);
-		} else {
-			// Works for ckeditor <= 4.8
-			return $this->ok("<script type='text/javascript'>window.parent.CKEDITOR.tools.callFunction($func, '$url', '$message');</script>");
+	/**
+	 * Downscale an image to 900px max, keeping the aspect ratio.
+	 *
+	 * @param string $path
+	 */
+	private function resizeImage($path) {
+		list($w, $h) = getimagesize($path);
+		if ($w === false or $h === false) return;
+
+		$max = 900;
+		if (max([$w, $h]) > $max) {
+			if ($h > $w) {
+				$w = $max * $w / $h;
+				$h = $max;
+			} else {
+				$h = $max * $h / $w;
+				$w = $max;
+			}
+			Image::resize($path, (int) $w, (int) $h);
 		}
 	}
 

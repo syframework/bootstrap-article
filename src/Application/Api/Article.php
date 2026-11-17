@@ -68,7 +68,12 @@ class Article extends \Sy\Bootstrap\Component\Api {
 					'csrf'    => $service->user->getCsrfToken(),
 				]);
 			}
-			if (is_null($id) or is_null($lang) or is_null($content)) $this->requestError();
+			if (is_null($id) or is_null($lang) or is_null($content)) {
+				return $this->requestError([
+					'status'  => 'ko',
+					'message' => 'Missing id, lang or content parameter',
+				]);
+			}
 
 			// Create article revision
 			$service->articleHistory->change([

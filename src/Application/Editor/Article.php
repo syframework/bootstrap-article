@@ -52,7 +52,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 				$h = $max * $h / $w;
 				$w = $max;
 			}
-			Image::resize($path, (int) $w, (int) $h);
+			Image::resize($path, (int) $w, (int) $h, strtolower(pathinfo($path, PATHINFO_EXTENSION)));
 		}
 	}
 

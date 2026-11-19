@@ -107,7 +107,7 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 
 ## Add URL converter in Application.php
 
-In ```protected/src/Application.php```
+In ```protected/src/Application.php```:
 ```php
 <?php
 namespace Project;
@@ -125,3 +125,7 @@ class Application extends \Sy\Bootstrap\Application {
 
 }
 ```
+
+Converters are evaluated in registration order. `ArticleConverter` must be registered **before** `ControllerActionConverter`, which is the terminal fallback; its position relative to `AliasConverter` depends on whether aliases should take precedence over article URLs. With this configuration, an article is reachable as `/a/<alias>` and is mapped to `p=page`, `a=article`, `id=<id>` and `lang=<article language>`.
+
+Article URLs have no language segment: `ArticleConverter` sets the current language from the article, so the page is rendered in the article language. See the [URL Converters](https://github.com/syframework/bootstrap/wiki/URL-Converters) wiki page for the full converter contract, ordering rules and `Url::build()` examples.

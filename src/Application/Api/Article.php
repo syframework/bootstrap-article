@@ -2,6 +2,7 @@
 namespace Sy\Bootstrap\Application\Api;
 
 use Project\Service\Container;
+use Sy\Bootstrap\Lib\HtmlSanitizer;
 
 class Article extends \Sy\Bootstrap\Component\Api {
 
@@ -72,6 +73,20 @@ class Article extends \Sy\Bootstrap\Component\Api {
 				return $this->requestError([
 					'status'  => 'ko',
 					'message' => 'Missing id, lang or content parameter',
+				]);
+			}
+
+			try {
+				$content = HtmlSanitizer::sanitize($content);
+			} catch (\LengthException $e) {
+				return $this->response(413, [
+					'status'  => 'ko',
+					'message' => 'Content too large',
+				]);
+			} catch (\InvalidArgumentException $e) {
+				return $this->response(400, [
+					'status'  => 'ko',
+					'message' => 'Content is not valid UTF-8',
 				]);
 			}
 

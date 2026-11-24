@@ -1,13 +1,14 @@
 <?php
 namespace Sy\Bootstrap\Component\Article;
 
-use Sy\Bootstrap\Lib\Url;
+use Sy\Bootstrap\Lib\ComponentFilter;
+use Sy\Bootstrap\Lib\HtmlSanitizer;
 use Sy\Bootstrap\Lib\Str;
+use Sy\Bootstrap\Lib\Url;
+use Sy\Bootstrap\Wysiwyg\Editor;
+use Sy\Bootstrap\Wysiwyg\Lib\EditorAssets;
 
 class Content extends \Sy\Component\WebComponent {
-
-	private const CKEDITOR_JS = 'https://cdn.ckeditor.com/4.22.1/full-all/ckeditor.js';
-	private const CKEDITOR_ROOT = WEB_ROOT . '/assets/ckeditor';
 
 	/**
 	 * @var int
@@ -99,8 +100,9 @@ class Content extends \Sy\Component\WebComponent {
 			}
 		}
 
-		// Set article content
-		$this->setVar('CONTENT', $article['content']);
+		// Defense in depth for legacy rows: the stored content is sanitized
+		// again before it is injected into the page.
+		$safeContent = ComponentFilter::sanitize(HtmlSanitizer::sanitize($article['content']), []);
 
 		// Micro data
 		$publishedAt = new \Sy\Bootstrap\Lib\Date($article['published_at']);
@@ -119,27 +121,37 @@ class Content extends \Sy\Component\WebComponent {
 			'UTIMESTAMP'   => $updatedAt->timestamp(),
 		]);
 
-		// Update
-		if ($user->hasPermission('article-update') or $user->id === $article['user_id']) {
-			$this->addJsLink(Content::CKEDITOR_JS);
+		$canEdit = $user->hasPermission('article-update') or (int) $user->id === (int) $article['user_id'];
 
+		$editorOptions = EditorConfig::build(
+			$this->id,
+			$this->lang,
+			$service->user->getCsrfToken(),
+			$safeContent,
+			$canEdit,
+			[
+				'load'         => Url::build('api', 'article'),
+				'save'         => Url::build('api', 'article'),
+				'image_browse' => Url::build('editor', 'article/browse', ['id' => $this->id, 'type' => 'image']),
+				'image_upload' => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'image']),
+				'file_browse'  => Url::build('editor', 'article/browse', ['id' => $this->id, 'type' => 'file']),
+				'file_upload'  => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'file']),
+			],
+			[
+				'engine'        => EditorAssets::engine(),
+				'ckeditorJs'    => EditorAssets::js(),
+				'ckeditorRoot'  => EditorAssets::root(),
+				'plugins'       => EditorAssets::plugins(),
+			]
+		);
+		$this->setComponent('WYSIWYG_EDITOR', new Editor($editorOptions));
+
+		// Update
+		if ($canEdit) {
 			$updateForm = new \Sy\Bootstrap\Component\Article\Update($this->id, $this->lang);
 			$this->setVar('UPDATE_ARTICLE_FORM', $updateForm);
 
-			$js->setVars([
-				'ID'               => $article['id'],
-				'CSRF'             => $service->user->getCsrfToken(),
-				'LANG'             => $article['lang'],
-				'URL'              => Url::build('api', 'article'),
-				'WEB_ROOT'         => WEB_ROOT,
-				'IMG_BROWSE'       => Url::build('editor', 'article/browse', ['id' => $this->id, 'type' => 'image']),
-				'IMG_UPLOAD'       => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'image']),
-				'FILE_BROWSE'      => Url::build('editor', 'article/browse', ['id' => $this->id, 'type' => 'file']),
-				'FILE_UPLOAD'      => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'file']),
-				'IMG_UPLOAD_AJAX'  => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'image', 'json' => '']),
-				'FILE_UPLOAD_AJAX' => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'file', 'json' => '']),
-				'CKEDITOR_ROOT'    => Content::CKEDITOR_ROOT,
-			]);
+			$js->setVar('ELEMENT_ID', 'article-content');
 			$js->setBlock('UPDATE_BLOCK');
 			$this->setBlock('UPDATE_BTN_BLOCK');
 			$this->setBlock('UPDATE_MODAL_BLOCK');

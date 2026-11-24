@@ -1,227 +1,133 @@
 (function () {
 
 <!-- BEGIN UPDATE_BLOCK -->
-	let changed = false;
-	let content = '';
-	let csrf = "{CSRF}";
+	const elementId = '{ELEMENT_ID}';
+	const startButton = document.getElementById('btn-article-update-start');
+	const stopButton = document.getElementById('btn-article-update-stop');
 
-	CKEDITOR.dtd.$removeEmpty['span'] = false;
-	CKEDITOR.dtd.$removeEmpty['i'] = false;
+	function instance() {
+		return window.SyWysiwyg ? window.SyWysiwyg.get(elementId) : null;
+	}
 
-	function save(reload) {
-		// Define the data to be sent in the POST request
-		const data = {
-			id: "{ID}",
-			lang: "{LANG}",
-			csrf: csrf,
-			content: CKEDITOR.instances['article-content'].getData().replace(/<p[^>]*>\s* \s*<\/p>/gm, '')
-		};
+	function showStart() {
+		if (!startButton || !stopButton) return;
+		startButton.style.display = 'block';
+		stopButton.classList.add('d-none');
+		stopButton.disabled = false;
+	}
 
-		// Set up the fetch request
-		fetch("{URL}", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/x-www-form-urlencoded"
-			},
-			body: new URLSearchParams(data)
-		})
-		.then(response => response.json())
-		.then(res => {
-			if (res.status === 'ko') {
-				alert((new DOMParser).parseFromString(res.message, 'text/html').documentElement.textContent);
-				if (res.csrf) {
-					csrf = res.csrf;
-					changed = true;
-					document.getElementById('btn-article-update-stop').removeAttribute('disabled');
-				} else {
-					CKEDITOR.instances['article-content'].destroy();
-					document.getElementById('article-content').setAttribute('contenteditable', 'false');
-					document.getElementById('btn-article-update-start').style.display = 'block';
-					document.getElementById('btn-article-update-stop').classList.add('d-none');
+	function showStop() {
+		if (!startButton || !stopButton) return;
+		startButton.style.display = 'none';
+		stopButton.classList.remove('d-none');
+		stopButton.disabled = false;
+	}
+
+	document.addEventListener('wysiwyg:ready', function (event) {
+		if (event.detail.elementId !== elementId) return;
+
+		const editor = event.detail.editor;
+		const writer = editor.dataProcessor.writer;
+
+		['p', 'div'].forEach(function (tag) {
+			writer.setRules(tag, {
+				indent: true,
+				breakBeforeOpen: true,
+				breakAfterOpen: true,
+				breakBeforeClose: true,
+				breakAfterClose: true
+			});
+		});
+
+		editor.dataProcessor.htmlFilter.addRules({
+			elements: {
+				img: function (element) {
+					element.addClass('img-fluid');
 				}
-			} else if (reload) {
-				CKEDITOR.instances['article-content'].destroy();
-				document.getElementById('article-content').setAttribute('contenteditable', 'false');
-				document.getElementById('btn-article-update-start').style.display = 'block';
-				document.getElementById('btn-article-update-stop').classList.add('d-none');
-				document.getElementById('article-content').innerHTML = res.content;
 			}
-			if (res.status === 'ok') {
-				content = res.content;
-			}
-			changed = false;
-		})
-		.catch(error => {
-			console.error('Error: Unable to make the POST request.', error);
+		});
+
+		editor.on('insertElement', function (event) {
+			if (event.data.getName() !== 'img') return;
+			event.data.addClass('img-fluid');
+		});
+	});
+
+	document.addEventListener('wysiwyg:error', function (event) {
+		if (event.detail.elementId !== elementId) return;
+
+		const message = event.detail.message || 'Unable to save the article';
+		alert((new DOMParser).parseFromString(message, 'text/html').documentElement.textContent);
+
+		if (event.detail.destroyed) showStart();
+	});
+
+	document.addEventListener('wysiwyg:stopped', function (event) {
+		if (event.detail.elementId !== elementId) return;
+
+		// A retryable save failure keeps the editor open; otherwise the engine
+		// has destroyed it and the start button is the only valid action.
+		if (!event.detail.saved && event.detail.dirty) {
+			showStop();
+			return;
+		}
+		showStart();
+	});
+
+	if (startButton) {
+		startButton.addEventListener('click', function (event) {
+			event.preventDefault();
+
+			const editor = instance();
+			if (!editor || editor.isStarted()) return;
+
+			startButton.style.display = 'none';
+			stopButton.classList.remove('d-none');
+			stopButton.disabled = true;
+
+			editor.start().then(function () {
+				if (editor.isStarted()) {
+					showStop();
+				} else {
+					showStart();
+				}
+			}).catch(function () {
+				showStart();
+			});
 		});
 	}
 
-	document.getElementById('btn-article-update-start').addEventListener('click', function (e) {
-		e.preventDefault();
-		if (CKEDITOR.instances['article-content']) return;
+	if (stopButton) {
+		stopButton.addEventListener('click', function (event) {
+			event.preventDefault();
 
-		const params = {
-			id: "{ID}",
-			lang: "{LANG}",
-			ts: Date.now()
-		};
-		const url = new URL('{URL}', window.location.origin);
-		Object.entries(params).forEach(([key, value]) => {
-			url.searchParams.set(key, value);
+			const editor = instance();
+			if (!editor) return;
+
+			stopButton.disabled = true;
+			editor.stop({save: true}).then(function (result) {
+				if (result && result.saved) showStart();
+				if (result && !result.saved && result.dirty) showStop();
+				if (result && !result.saved && !result.dirty) showStart();
+			}).catch(function () {
+				showStart();
+			});
 		});
-
-		fetch(url.href)
-			.then(response => response.json())
-			.then(res => {
-				if (res.status === 'ok') {
-					content = res.content;
-					document.getElementById('article-content').innerHTML = res.content;
-
-					const editor = CKEDITOR.inline('article-content', {
-						toolbar: [
-							{ name: 'document', items: [ 'Sourcedialog', '-', 'Save', '-', 'Templates' ] },
-							{ name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
-							{ name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat' ] },
-							'/',
-							{ name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
-							{ name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
-							{ name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar', 'Iframe' ] },
-							'/',
-							{ name: 'styles', items: [ 'Styles', 'Format' ] },
-							{ name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-							{ name: 'tools', items: [ 'ShowBlocks' ] },
-						],
-						title: false,
-						startupFocus: true,
-						templates_replaceContent: false,
-						linkShowAdvancedTab: false,
-						clipboard_handleImages: false,
-						filebrowserImageBrowseUrl: '{IMG_BROWSE}',
-						filebrowserImageUploadUrl: '{IMG_UPLOAD_AJAX}',
-						filebrowserBrowseUrl: '{FILE_BROWSE}',
-						filebrowserUploadUrl: '{FILE_UPLOAD_AJAX}',
-						filebrowserWindowWidth: 400,
-						filebrowserWindowHeight: 400,
-						imageUploadUrl: '{IMG_UPLOAD_AJAX}',
-						uploadUrl: '{FILE_UPLOAD_AJAX}',
-						extraPlugins: 'sourcedialog,tableresize,uploadimage,uploadfile',
-						allowedContent: {
-							$1: {
-								elements: CKEDITOR.dtd,
-								attributes: true,
-								styles: true,
-								classes: true
-							},
-							svg: {
-								attributes: true,
-								styles: true,
-								classes: true
-							},
-							path: {
-								attributes: true,
-								styles: true,
-								classes: true
-							}
-						},
-						justifyClasses: [ 'text-left', 'text-center', 'text-right', 'text-justify' ],
-						disallowedContent: 'script; *[on*]; img{width,height}',
-						removePlugins: 'about,exportpdf,bidi,font,forms,language,pagebreak,newpage,wsc,scayt,flash,smiley',
-						templates: 'bootstrap-article',
-						templates_files: ['{CKEDITOR_ROOT}/templates/article/js/{LANG}.js'],
-						on: {
-							instanceReady: function (ev) {
-								this.dataProcessor.writer.setRules('p', {
-									indent: true,
-									breakBeforeOpen: true,
-									breakAfterOpen: true,
-									breakBeforeClose: true,
-									breakAfterClose: true
-								});
-								this.dataProcessor.writer.setRules('div', {
-									indent: true,
-									breakBeforeOpen: true,
-									breakAfterOpen: true,
-									breakBeforeClose: true,
-									breakAfterClose: true
-								});
-								this.dataProcessor.htmlFilter.addRules({
-									elements: {
-										img: function(el) {
-											el.addClass('img-fluid');
-										}
-									},
-									attributes: {
-										style: function(val, el) {
-											val = CKEDITOR.tools.parseCssText(val, 1);
-											if (val.display in {'block': 1, 'inline-block': 1}) {
-												delete val.display;
-											}
-											return CKEDITOR.tools.writeCssText(val) || false;
-										}
-									}
-								});
-							},
-							insertElement: function(e) {
-								if (e.data.getName() !== 'img') return;
-								e.data.addClass('img-fluid');
-								e.data.setAttribute('style', '');
-							},
-							dialogShow: function(e) {
-								if (e.data.getName() !== 'sourcedialog') return;
-								e.data.on('hide', function() {
-									if (changed) save(true);
-								});
-							}
-						}
-					});
-
-					editor.on('blur', function() {
-						if (changed) save();
-					});
-
-					editor.on('change', function() {
-						changed = true;
-					});
-
-					document.getElementById('article-content').contentEditable = true;
-					document.getElementById('btn-article-update-start').style.display = 'none';
-					document.getElementById('btn-article-update-stop').classList.remove('d-none');
-					document.getElementById('btn-article-update-stop').disabled = false;
-				} else {
-					alert((new DOMParser).parseFromString(res.message, 'text/html').documentElement.textContent);
-				}
-			})
-			.catch(error => console.error('Error:', error));
-	});
-
-	document.getElementById('btn-article-update-stop').addEventListener('click', function (e) {
-		e.preventDefault();
-		if (changed) {
-			document.getElementById('btn-article-update-stop').disabled = true;
-			save(true);
-		} else {
-			CKEDITOR.instances['article-content'].destroy();
-			document.getElementById('article-content').contentEditable = false;
-			document.getElementById('btn-article-update-start').style.display = 'block';
-			document.getElementById('btn-article-update-stop').classList.add('d-none');
-			document.getElementById('article-content').innerHTML = content;
-		}
-	});
-
-	setInterval(function() {
-		if (changed) save();
-	}, 60000);
+	}
 
 	const updateModal = document.getElementById('update-article-modal');
 
-	if (updateModal.querySelector('div.alert')) {
-		const bsModal = new bootstrap.Modal('#update-article-modal');
-		bsModal.show();
-	}
+	if (updateModal) {
+		if (updateModal.querySelector('div.alert')) {
+			const modal = new bootstrap.Modal('#update-article-modal');
+			modal.show();
+		}
 
-	updateModal.addEventListener('shown.bs.modal', () => {
-		updateModal.querySelector('input[type="text"]').focus();
-	});
+		updateModal.addEventListener('shown.bs.modal', function () {
+			const input = updateModal.querySelector('input[type="text"]');
+			if (input) input.focus();
+		});
+	}
 <!-- END UPDATE_BLOCK -->
 
 })();

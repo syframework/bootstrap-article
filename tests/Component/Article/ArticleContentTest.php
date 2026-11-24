@@ -1,6 +1,7 @@
 <?php
 namespace Sy\Test\Component\Article;
 
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
 use Sy\Bootstrap\Component\Article\Content;
 
@@ -22,6 +23,15 @@ class ArticleContentTest extends TestCase {
 		$this->assertStringNotContainsString('alert(1)', $html);
 		$this->assertStringNotContainsString('data-sycomponent', $html);
 		$this->assertStringNotContainsString('<script>alert', $html);
+	}
+
+	#[RunInSeparateProcess]
+	public function testProjectAllowlistIsRespected() {
+		define('WYSIWYG_COMPONENT_ALLOWLIST', ['article' => ['Unknown']]);
+
+		$html = $this->render();
+		$this->assertStringContainsString('data-sycomponent="Unknown"', $html);
+		$this->assertStringNotContainsString('alert(1)', $html);
 	}
 
 	public function testReadOnlyArticleLoadsNoEditorAssets() {

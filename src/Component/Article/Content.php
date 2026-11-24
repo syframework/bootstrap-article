@@ -1,7 +1,7 @@
 <?php
 namespace Sy\Bootstrap\Component\Article;
 
-use Sy\Bootstrap\Lib\ComponentFilter;
+use Sy\Bootstrap\Wysiwyg\Lib\ComponentFilter;
 use Sy\Bootstrap\Lib\HtmlSanitizer;
 use Sy\Bootstrap\Lib\Str;
 use Sy\Bootstrap\Lib\Url;

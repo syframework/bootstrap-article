@@ -3,6 +3,7 @@ namespace Sy\Bootstrap\Application\Api;
 
 use Project\Service\Container;
 use Sy\Bootstrap\Lib\HtmlSanitizer;
+use Sy\Bootstrap\Wysiwyg\Lib\ComponentFilter;
 
 class Article extends \Sy\Bootstrap\Component\Api {
 
@@ -44,7 +45,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 
 			return $this->ok([
 				'status'  => 'ok',
-				'content' => \Sy\Bootstrap\Lib\ComponentFilter::sanitize(
+				'content' => ComponentFilter::sanitize(
 					HtmlSanitizer::sanitize($article['content']),
 					[]
 				),

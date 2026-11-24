@@ -153,7 +153,7 @@ class Content extends \Sy\Component\WebComponent {
 
 			$js->setVars([
 				'ELEMENT_ID'    => 'article-content',
-				'CKEDITOR_ROOT' => EditorAssets::root(),
+				'CKEDITOR_ROOT' => json_encode(EditorAssets::root()),
 			]);
 			$js->setBlock('UPDATE_BLOCK');
 			$this->setBlock('UPDATE_BTN_BLOCK');

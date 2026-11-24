@@ -44,7 +44,10 @@ class Article extends \Sy\Bootstrap\Component\Api {
 
 			return $this->ok([
 				'status'  => 'ok',
-				'content' => $article['content'],
+				'content' => \Sy\Bootstrap\Lib\ComponentFilter::sanitize(
+					HtmlSanitizer::sanitize($article['content']),
+					[]
+				),
 			]);
 		} catch (\Sy\Db\MySql\Exception $e) {
 			return $this->serverError([

@@ -47,7 +47,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 				'status'  => 'ok',
 				'content' => ComponentFilter::sanitize(
 					HtmlSanitizer::sanitize($article['content']),
-					[]
+					ComponentFilter::allowlist('article')
 				),
 			]);
 		} catch (\Sy\Db\MySql\Exception $e) {

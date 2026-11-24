@@ -101,8 +101,10 @@ class Content extends \Sy\Component\WebComponent {
 		}
 
 		// Defense in depth for legacy rows: the stored content is sanitized
-		// again before it is injected into the page.
-		$safeContent = ComponentFilter::sanitize(HtmlSanitizer::sanitize($article['content']), []);
+		// again before it is injected into the page. The project can authorize
+		// its own components through WYSIWYG_COMPONENT_ALLOWLIST['article'].
+		$componentAllowlist = ComponentFilter::allowlist('article');
+		$safeContent = ComponentFilter::sanitize(HtmlSanitizer::sanitize($article['content']), $componentAllowlist);
 
 		// Micro data
 		$publishedAt = new \Sy\Bootstrap\Lib\Date($article['published_at']);
@@ -142,7 +144,8 @@ class Content extends \Sy\Component\WebComponent {
 				'ckeditorJs'    => EditorAssets::js(),
 				'ckeditorRoot'  => EditorAssets::root(),
 				'plugins'       => EditorAssets::plugins(),
-			]
+			],
+			$componentAllowlist
 		);
 		$this->setComponent('WYSIWYG_EDITOR', new Editor($editorOptions));
 

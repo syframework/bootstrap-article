@@ -105,6 +105,18 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 ```
 
 
+## Component allowlist
+
+By default, Article neutralizes every server-side component (`data-sycomponent`). A project can authorize its own components in `protected/conf/conf.php`:
+
+```php
+define('WYSIWYG_COMPONENT_ALLOWLIST', [
+	'article' => [\Project\Component\Article\Map::class],
+]);
+```
+
+The entries are merged with the package default (empty for Article), and the editor's `components` option is enabled automatically when the resulting list is not empty. The same constant also accepts `content` (CMS) and `place` keys.
+
 ## Add URL converter in Application.php
 
 In ```protected/src/Application.php```:

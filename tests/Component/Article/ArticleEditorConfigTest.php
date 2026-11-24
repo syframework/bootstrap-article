@@ -56,7 +56,37 @@ class ArticleEditorConfigTest extends TestCase {
 		$this->assertSame(EditorConfig::ALLOWED_CONTENT, $options['allowed-content']);
 		$this->assertSame('/assets/ckeditor/templates/article/js/fr.js', $options['templates-files'][0]);
 		$this->assertTrue($options['editable']);
+		$this->assertFalse($options['components']['enabled']);
+		$this->assertSame([], $options['components']['allowlist']);
 		$this->assertArrayNotHasKey('CKEDITOR', $options);
+	}
+
+	public function testComponentsAreEnabledWhenTheProjectAllowsThem() {
+		$options = EditorConfig::build(
+			42,
+			'fr',
+			'csrf',
+			'<p>safe</p>',
+			true,
+			[
+				'load'         => '/api/article',
+				'save'         => '/api/article',
+				'image_browse' => '/editor/article/browse',
+				'image_upload' => '/editor/article/upload',
+				'file_browse'  => '/editor/article/browse',
+				'file_upload'  => '/editor/article/upload',
+			],
+			[
+				'engine'        => '/assets/js/wysiwyg.js',
+				'ckeditorJs'    => '/ckeditor.js',
+				'ckeditorRoot'  => '/assets/ckeditor',
+				'plugins'       => '/assets/js/plugins',
+			],
+			['Project\\Component\\Article\\Map']
+		);
+
+		$this->assertTrue($options['components']['enabled']);
+		$this->assertSame(['Project\\Component\\Article\\Map'], $options['components']['allowlist']);
 	}
 
 }

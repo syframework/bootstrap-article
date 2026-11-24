@@ -25,11 +25,12 @@ class EditorConfig {
 	 * @param string     $csrf
 	 * @param string     $content Sanitized initial HTML
 	 * @param bool       $editable
-	 * @param array      $urls      load, save, image_browse, image_upload, file_browse, file_upload
-	 * @param array      $assets    engine, ckeditorJs, ckeditorRoot, plugins
+	 * @param array      $urls               load, save, image_browse, image_upload, file_browse, file_upload
+	 * @param array      $assets             engine, ckeditorJs, ckeditorRoot, plugins
+	 * @param array      $componentAllowlist Components the project authorizes
 	 * @return array
 	 */
-	public static function build($id, $lang, $csrf, $content, $editable, array $urls, array $assets) {
+	public static function build($id, $lang, $csrf, $content, $editable, array $urls, array $assets, array $componentAllowlist = []) {
 		return [
 			'element-id' => 'article-content',
 			'mode'       => 'inline',
@@ -62,6 +63,10 @@ class EditorConfig {
 			],
 			'extra-plugins'  => ['sourcedialog', 'tableresize', 'uploadimage', 'uploadfile'],
 			'remove-plugins' => ['about', 'exportpdf', 'bidi', 'font', 'forms', 'language', 'pagebreak', 'newpage', 'wsc', 'scayt', 'flash', 'smiley'],
+			'components'     => [
+				'enabled'   => $componentAllowlist !== [],
+				'allowlist' => $componentAllowlist,
+			],
 			'config'         => [
 				'toolbar' => [
 					['name' => 'document', 'items' => ['Sourcedialog', '-', 'Save', '-', 'Templates']],

@@ -1,7 +1,63 @@
 <?php
 namespace Project\Service;
 
-use Sy\Bootstrap\Service\NullService;
+class UserStub {
+
+	public $id = 1;
+
+	public function getCurrentUser() {
+		return $this;
+	}
+
+	public function hasPermission($permission) {
+		return false;
+	}
+
+	public function getCsrfToken() {
+		return 'csrf-token';
+	}
+
+}
+
+class ArticleStub {
+
+	public static $userId = 2;
+
+	public $updated = [];
+
+	public function retrieve($where) {
+		return [
+			'id'             => $where['id'] ?? 1,
+			'lang'           => $where['lang'] ?? 'fr',
+			'title'          => 'Article title',
+			'description'    => 'Article description',
+			'content'        => '<p>Hello <script>alert(1)</script></p><div data-sycomponent="Unknown">slot</div>',
+			'status'         => 'public',
+			'user_id'        => self::$userId,
+			'user_firstname' => 'Jane',
+			'user_lastname'  => 'Doe',
+			'published_at'   => '2026-01-01 12:00:00',
+			'updated_at'     => '2026-01-02 12:00:00',
+			'category_id'    => null,
+			'alias'          => 'article-title',
+		];
+	}
+
+	public function update($where, $fields) {
+		$this->updated[] = [$where, $fields];
+	}
+
+}
+
+class ArticleHistoryStub {
+
+	public $changed = [];
+
+	public function change($data, $where) {
+		$this->changed[] = [$data, $where];
+	}
+
+}
 
 class Container extends \Sy\Bootstrap\Service\Container {
 
@@ -9,7 +65,13 @@ class Container extends \Sy\Bootstrap\Service\Container {
 		parent::__construct();
 
 		$this->user = function () {
-			return new NullService();
+			return new UserStub();
+		};
+		$this->article = function () {
+			return new ArticleStub();
+		};
+		$this->articleHistory = function () {
+			return new ArticleHistoryStub();
 		};
 	}
 

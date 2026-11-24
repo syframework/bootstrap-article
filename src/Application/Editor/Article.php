@@ -2,7 +2,6 @@
 namespace Sy\Bootstrap\Application\Editor;
 
 use Sy\Bootstrap\Lib\Image;
-use Sy\Bootstrap\Wysiwyg\Application\Editor\CkFile;
 
 class Article extends \Sy\Bootstrap\Component\Api {
 

@@ -1,5 +1,5 @@
 CKEDITOR.addTemplates('bootstrap-article', {
-	imagesPath: '/assets/ckeditor/templates/article/img/',
+	imagesPath: (window.SY_CKEDITOR_ROOT || '/assets/ckeditor') + '/templates/article/img/',
 	templates: [
 		{
 			title: 'Article exemple',

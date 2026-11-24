@@ -151,7 +151,10 @@ class Content extends \Sy\Component\WebComponent {
 			$updateForm = new \Sy\Bootstrap\Component\Article\Update($this->id, $this->lang);
 			$this->setVar('UPDATE_ARTICLE_FORM', $updateForm);
 
-			$js->setVar('ELEMENT_ID', 'article-content');
+			$js->setVars([
+				'ELEMENT_ID'    => 'article-content',
+				'CKEDITOR_ROOT' => EditorAssets::root(),
+			]);
 			$js->setBlock('UPDATE_BLOCK');
 			$this->setBlock('UPDATE_BTN_BLOCK');
 			$this->setBlock('UPDATE_MODAL_BLOCK');

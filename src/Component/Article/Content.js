@@ -1,6 +1,8 @@
 (function () {
 
 <!-- BEGIN UPDATE_BLOCK -->
+	window.SY_CKEDITOR_ROOT = '{CKEDITOR_ROOT}';
+
 	const elementId = '{ELEMENT_ID}';
 	const startButton = document.getElementById('btn-article-update-start');
 	const stopButton = document.getElementById('btn-article-update-stop');

@@ -31,7 +31,7 @@ class ArticleStub {
 			'lang'           => $where['lang'] ?? 'fr',
 			'title'          => 'Article title',
 			'description'    => 'Article description',
-			'content'        => '<p>Hello <script>alert(1)</script></p><div data-sycomponent="Unknown">slot</div>',
+			'content'        => '<p style="color:red">Hello <script>alert(1)</script></p><div data-sycomponent="Unknown">slot</div><div data-sycomponent="Unknown">{SLOT}</div>',
 			'status'         => 'public',
 			'user_id'        => self::$userId,
 			'user_firstname' => 'Jane',

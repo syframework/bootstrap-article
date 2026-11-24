@@ -23,6 +23,8 @@ class ArticleContentTest extends TestCase {
 		$this->assertStringNotContainsString('alert(1)', $html);
 		$this->assertStringNotContainsString('data-sycomponent', $html);
 		$this->assertStringNotContainsString('<script>alert', $html);
+		$this->assertStringNotContainsString('{SLOT}', $html);
+		$this->assertStringNotContainsString('style="color:red"', $html);
 	}
 
 	#[RunInSeparateProcess]

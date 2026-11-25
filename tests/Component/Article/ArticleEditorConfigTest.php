@@ -56,6 +56,7 @@ class ArticleEditorConfigTest extends TestCase {
 		$this->assertSame(EditorConfig::ALLOWED_CONTENT, $options['allowed-content']);
 		$this->assertSame('/assets/ckeditor/templates/article/js/fr.js', $options['templates-files'][0]);
 		$this->assertNotContains('sycomponent', $options['extra-plugins']);
+		$this->assertNotContains('Sycomponent', $this->toolbarItems($options, 'insert'));
 		$this->assertTrue($options['editable']);
 		$this->assertFalse($options['components']['enabled']);
 		$this->assertSame([], $options['components']['allowlist']);
@@ -88,7 +89,15 @@ class ArticleEditorConfigTest extends TestCase {
 
 		$this->assertTrue($options['components']['enabled']);
 		$this->assertContains('sycomponent', $options['extra-plugins']);
+		$this->assertContains('Sycomponent', $this->toolbarItems($options, 'insert'));
 		$this->assertSame(['Project\\Component\\Article\\Map'], $options['components']['allowlist']);
+	}
+
+	private function toolbarItems(array $options, $group) {
+		foreach ($options['config']['toolbar'] as $item) {
+			if (is_array($item) and ($item['name'] ?? null) === $group) return $item['items'];
+		}
+		return [];
 	}
 
 }

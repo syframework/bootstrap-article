@@ -32,7 +32,11 @@ class EditorConfig {
 	 */
 	public static function build($id, $lang, $csrf, $content, $editable, array $urls, array $assets, array $componentAllowlist = []) {
 		$extraPlugins = ['sourcedialog', 'tableresize', 'uploadimage', 'uploadfile'];
-		if ($componentAllowlist !== []) $extraPlugins[] = 'sycomponent';
+		$insertItems  = ['Image', 'Table', 'HorizontalRule', 'SpecialChar', 'Iframe'];
+		if ($componentAllowlist !== []) {
+			$extraPlugins[] = 'sycomponent';
+			array_unshift($insertItems, 'Sycomponent');
+		}
 
 		return [
 			'element-id' => 'article-content',
@@ -78,7 +82,7 @@ class EditorConfig {
 					'/',
 					['name' => 'paragraph', 'items' => ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock']],
 					['name' => 'links', 'items' => ['Link', 'Unlink', 'Anchor']],
-					['name' => 'insert', 'items' => ['Image', 'Table', 'HorizontalRule', 'SpecialChar', 'Iframe']],
+					['name' => 'insert', 'items' => $insertItems],
 					'/',
 					['name' => 'styles', 'items' => ['Styles', 'Format']],
 					['name' => 'colors', 'items' => ['TextColor', 'BGColor']],

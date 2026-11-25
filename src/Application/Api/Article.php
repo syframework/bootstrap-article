@@ -116,6 +116,12 @@ class Article extends \Sy\Bootstrap\Component\Api {
 				'content' => $content,
 			]);
 		} catch (\Sy\Db\MySql\Exception $e) {
+			error_log(sprintf(
+				'[bootstrap-article] save failed for article %s/%s: %s',
+				(string) $this->post('id'),
+				(string) $this->post('lang'),
+				$e->getMessage()
+			));
 			return $this->serverError([
 				'status' => 'ko',
 				'message' => $this->_('Database error'),

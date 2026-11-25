@@ -6,6 +6,7 @@
 	const elementId = '{ELEMENT_ID}';
 	const startButton = document.getElementById('btn-article-update-start');
 	const stopButton = document.getElementById('btn-article-update-stop');
+	let savedDuringSession = false;
 
 	function instance() {
 		return window.SyWysiwyg ? window.SyWysiwyg.get(elementId) : null;
@@ -64,19 +65,32 @@
 		if (event.detail.destroyed) showStart();
 	});
 
+	document.addEventListener('wysiwyg:start', function (event) {
+		if (event.detail.elementId !== elementId) return;
+		savedDuringSession = false;
+	});
+
+	document.addEventListener('wysiwyg:saved', function (event) {
+		if (event.detail.elementId !== elementId) return;
+		savedDuringSession = true;
+	});
+
 	document.addEventListener('wysiwyg:stopped', function (event) {
 		if (event.detail.elementId !== elementId) return;
 
-		// The source slots are saved, not the rendered components: reload so
-		// ComponentRenderer rebuilds the components from the server.
-		if (event.detail.saved) {
-			location.reload();
+		// A retryable save failure keeps the editor open: an earlier autosave
+		// must not reload and discard the unsaved changes.
+		if (!event.detail.saved && event.detail.dirty) {
+			showStop();
 			return;
 		}
 
-		// A retryable save failure keeps the editor open.
-		if (!event.detail.saved && event.detail.dirty) {
-			showStop();
+		// The source slots are saved, not the rendered components: reload so
+		// ComponentRenderer rebuilds the components from the server. This is
+		// also needed when an autosave already persisted the content and the
+		// explicit stop found nothing left to save.
+		if (event.detail.saved || savedDuringSession) {
+			location.reload();
 			return;
 		}
 		showStart();

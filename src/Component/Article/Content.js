@@ -13,14 +13,14 @@
 
 	function showStart() {
 		if (!startButton || !stopButton) return;
-		startButton.style.display = 'block';
+		startButton.classList.remove('d-none');
 		stopButton.classList.add('d-none');
 		stopButton.disabled = false;
 	}
 
 	function showStop() {
 		if (!startButton || !stopButton) return;
-		startButton.style.display = 'none';
+		startButton.classList.add('d-none');
 		stopButton.classList.remove('d-none');
 		stopButton.disabled = false;
 	}
@@ -89,7 +89,7 @@
 			const editor = instance();
 			if (!editor || editor.isStarted()) return;
 
-			startButton.style.display = 'none';
+			startButton.classList.add('d-none');
 			stopButton.classList.remove('d-none');
 			stopButton.disabled = true;
 

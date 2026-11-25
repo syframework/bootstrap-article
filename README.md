@@ -26,21 +26,11 @@ Use the database installation script: ```sql/install.sql```
 
 ### 3. Copy template files
 
-Copy template files into your project templates directory: ```protected/templates/Application/content```
+Copy template files into your project templates directory: ```protected/templates/Application/Page/content```
 
-### 4. Register language files
+### 4. Translations
 
-The package ships its translations in `lang/bootstrap-article`. Add them to the page translator in `Project\Application\Page::preInit()` so the article page template and the article components share them:
-
-```php
-	protected function preInit() {
-		$articleLangDir = __DIR__ . '/../../vendor/sy/bootstrap-article/lang/bootstrap-article';
-		if (is_dir($articleLangDir)) $this->addTranslator($articleLangDir);
-		// ... existing head data
-	}
-```
-
-The `Content` component already registers the same translator for its own template; this page-level registration is what translates `{"About the author"}`, `{"Share this article"}` and `{"Must read..."}` in `templates/Application/Page/content/article.html`. If the project copied the folder into `protected/lang/bootstrap-article`, `LANG_DIR . '/bootstrap-article'` is equivalent.
+Each Article component embeds its own translator (`lang/bootstrap-article`). The section titles are owned by the `Author`, `Share`, `Side` and `Categories` components, so no page-level translator registration is required.
 
 ### 5. Copy SCSS files
 
@@ -66,7 +56,7 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 	 */
 	public function articlesAction() {
 		$components = [
-			'NAV'         => new \Sy\Bootstrap\Component\Article\Nav('articles'),
+			'NAV'         => new \Sy\Bootstrap\Component\Article\Categories('articles'),
 			'SEARCH_FORM' => new \Sy\Bootstrap\Component\Article\Search(),
 			'FEED'        => new \Sy\Bootstrap\Component\Article\Feed(),
 		];
@@ -112,7 +102,7 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 			'ARTICLE_CONTENT'    => $content,
 			'ARTICLE_AUTHOR'     => new \Sy\Bootstrap\Component\Article\Author($article['user_id']),
 			'SIDE'               => new \Sy\Bootstrap\Component\Article\Side($id, $article['category_id']),
-			'SHARE'              => new \Sy\Bootstrap\Component\Share\Buttons(PROJECT_URL . Url::build('page', 'article', ['id' => $id])),
+			'SHARE'              => new \Sy\Bootstrap\Component\Article\Share(PROJECT_URL . Url::build('page', 'article', ['id' => $id])),
 		]);
 	}
 ```

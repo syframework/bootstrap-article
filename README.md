@@ -91,6 +91,9 @@ Create 2 methods in your ```Project\Application\Page``` class (in ```protected/s
 		}
 		if (empty($article)) throw new \Sy\Bootstrap\Application\Page\NotFoundException();
 
+		// The article may come from the language fallback: use its real lang.
+		$lang = $article['lang'];
+
 		// Article content
 		$content = new \Sy\Bootstrap\Component\Article\Content($id, $lang);
 

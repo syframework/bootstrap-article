@@ -37,6 +37,11 @@ class Content extends \Sy\Component\WebComponent {
 		$service = \Project\Service\Container::getInstance();
 		$article = $service->article->retrieve(['id' => $this->id, 'lang' => $this->lang]);
 
+		// The service falls back to the article language when the requested
+		// translation is missing. Keep the editor/save-data on the real language
+		// or the history foreign key would reject the save.
+		if (!empty($article['lang'])) $this->lang = $article['lang'];
+
 		// Set article title and description
 		if (!empty($article['title'])) {
 			$title = htmlentities($article['title'], ENT_QUOTES, 'UTF-8');

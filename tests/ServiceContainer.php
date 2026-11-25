@@ -27,12 +27,14 @@ class ArticleStub {
 
 	public static $content = self::DEFAULT_CONTENT;
 
+	public static $lang = null;
+
 	public $updated = [];
 
 	public function retrieve($where) {
 		return [
 			'id'             => $where['id'] ?? 1,
-			'lang'           => $where['lang'] ?? 'fr',
+			'lang'           => self::$lang ?? ($where['lang'] ?? 'fr'),
 			'title'          => 'Article title',
 			'description'    => 'Article description',
 			'content'        => self::$content,

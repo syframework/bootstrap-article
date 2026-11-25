@@ -80,6 +80,16 @@ class Article extends \Sy\Bootstrap\Component\Api {
 				]);
 			}
 
+			// Refuse a save on a translation that does not exist: the history
+			// foreign key (article_id, article_lang) would otherwise fail.
+			$article = $service->article->retrieve(['id' => $id, 'lang' => $lang]);
+			if (empty($article) or $article['lang'] !== $lang) {
+				return $this->notFound([
+					'status'  => 'ko',
+					'message' => 'Article not found',
+				]);
+			}
+
 			try {
 				$content = HtmlSanitizer::sanitize($content);
 			} catch (\LengthException $e) {

@@ -32,6 +32,7 @@ class ArticleApiTest extends TestCase {
 		$_POST    = $this->postBackup;
 		$_SERVER  = $this->serverBackup;
 		ArticleStub::$userId = 2;
+		ArticleStub::$lang = null;
 	}
 
 	private function post(array $data) {
@@ -51,6 +52,14 @@ class ArticleApiTest extends TestCase {
 		$this->assertStringContainsString('"status":"ok"', $output);
 		$this->assertStringNotContainsString('alert(1)', $output);
 		$this->assertStringContainsString('Hello', $output);
+	}
+
+	public function testPostRejectsSaveOnMissingTranslation() {
+		ArticleStub::$lang = 'en';
+
+		$output = $this->post(['lang' => 'fr', 'content' => '<p>Hello</p>']);
+
+		$this->assertStringContainsString('Article not found', $output);
 	}
 
 	public function testPostRejectsContentLargerThanOneMebibyte() {

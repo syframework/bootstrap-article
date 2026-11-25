@@ -28,9 +28,18 @@ Use the database installation script: ```sql/install.sql```
 
 Copy template files into your project templates directory: ```protected/templates/Application/content```
 
-### 4. Copy language files
+### 4. Register language files
 
-Copy the language folder ```lang/bootstrap-article``` into your project language directory: ```protected/lang```
+The package ships its translations in `lang/bootstrap-article`. Add them to the page translator in `Project\Application\Page::preInit()` so the article page template and the article components share them:
+
+```php
+	protected function preInit() {
+		$this->addTranslator(__DIR__ . '/../../vendor/sy/bootstrap-article/lang/bootstrap-article');
+		// ... existing head data
+	}
+```
+
+The `Content` component already registers the same translator for its own template; this page-level registration is what translates `{"About the author"}`, `{"Share this article"}` and `{"Must read..."}` in `templates/Application/Page/content/article.html`. If the project copied the folder into `protected/lang/bootstrap-article`, `LANG_DIR . '/bootstrap-article'` is equivalent.
 
 ### 5. Copy SCSS files
 

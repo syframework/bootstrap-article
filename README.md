@@ -115,7 +115,7 @@ define('WYSIWYG_COMPONENT_ALLOWLIST', [
 ]);
 ```
 
-The entries are merged with the package default (empty for Article), and the editor's `components` option is enabled automatically when the resulting list is not empty. The same constant also accepts `content` (CMS) and `place` keys.
+The entries are merged with the package default (empty for Article), and the editor's `components` option is enabled automatically when the resulting list is not empty. Allowed components are instantiated and rendered by `ComponentRenderer`; their `data-sycomponent` wrapper is kept so they are rebuilt after a save even when `HtmlSanitizer` removes the rendered form controls. The same constant also accepts `content` (CMS) and `place` keys.
 
 ## Add URL converter in Application.php
 

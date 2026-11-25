@@ -3,9 +3,14 @@ namespace Sy\Test\Component\Article;
 
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\TestCase;
+use Project\Service\ArticleStub;
 use Sy\Bootstrap\Component\Article\Content;
 
 class ArticleContentTest extends TestCase {
+
+	protected function tearDown(): void {
+		ArticleStub::$content = ArticleStub::DEFAULT_CONTENT;
+	}
 
 	private function render() {
 		return (string) new Content(1, 'fr');
@@ -28,11 +33,17 @@ class ArticleContentTest extends TestCase {
 	}
 
 	#[RunInSeparateProcess]
-	public function testProjectAllowlistIsRespected() {
-		define('WYSIWYG_COMPONENT_ALLOWLIST', ['article' => ['Unknown']]);
+	public function testAllowedComponentIsRendered() {
+		ArticleStub::$content = '<p><script>alert(1)</script></p><div data-sycomponent="Sy\\Test\\Fixtures\\ArticleComponent">{SLOT}</div>';
+		define('WYSIWYG_COMPONENT_ALLOWLIST', [
+			'article' => [\Sy\Test\Fixtures\ArticleComponent::class],
+		]);
 
 		$html = $this->render();
-		$this->assertStringContainsString('data-sycomponent="Unknown"', $html);
+
+		$this->assertStringContainsString('<span class="article-fixture">contact</span>', $html);
+		$this->assertStringContainsString('data-sycomponent="Sy\\Test\\Fixtures\\ArticleComponent"', $html);
+		$this->assertStringNotContainsString('{SLOT}', $html);
 		$this->assertStringNotContainsString('alert(1)', $html);
 	}
 

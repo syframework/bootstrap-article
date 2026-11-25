@@ -2,6 +2,7 @@
 namespace Sy\Bootstrap\Component\Article;
 
 use Sy\Bootstrap\Wysiwyg\Lib\ComponentFilter;
+use Sy\Bootstrap\Wysiwyg\Lib\ComponentRenderer;
 use Sy\Bootstrap\Lib\HtmlSanitizer;
 use Sy\Bootstrap\Lib\Str;
 use Sy\Bootstrap\Lib\Url;
@@ -105,6 +106,7 @@ class Content extends \Sy\Component\WebComponent {
 		// its own components through WYSIWYG_COMPONENT_ALLOWLIST['article'].
 		$componentAllowlist = ComponentFilter::allowlist('article');
 		$safeContent = ComponentFilter::sanitize(HtmlSanitizer::sanitize($article['content']), $componentAllowlist);
+		$safeContent = ComponentRenderer::render($safeContent, $componentAllowlist, $this);
 
 		// Micro data
 		$publishedAt = new \Sy\Bootstrap\Lib\Date($article['published_at']);

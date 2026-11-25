@@ -4,6 +4,7 @@ namespace Sy\Bootstrap\Application\Api;
 use Project\Service\Container;
 use Sy\Bootstrap\Lib\HtmlSanitizer;
 use Sy\Bootstrap\Wysiwyg\Lib\ComponentFilter;
+use Sy\Bootstrap\Wysiwyg\Lib\ComponentRenderer;
 
 class Article extends \Sy\Bootstrap\Component\Api {
 
@@ -43,12 +44,15 @@ class Article extends \Sy\Bootstrap\Component\Api {
 				]);
 			}
 
+			$allowlist = ComponentFilter::allowlist('article');
+			$content = ComponentFilter::sanitize(
+				HtmlSanitizer::sanitize($article['content']),
+				$allowlist
+			);
+
 			return $this->ok([
 				'status'  => 'ok',
-				'content' => ComponentFilter::sanitize(
-					HtmlSanitizer::sanitize($article['content']),
-					ComponentFilter::allowlist('article')
-				),
+				'content' => ComponentRenderer::render($content, $allowlist),
 			]);
 		} catch (\Sy\Db\MySql\Exception $e) {
 			return $this->serverError([

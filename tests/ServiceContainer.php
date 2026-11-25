@@ -21,7 +21,11 @@ class UserStub {
 
 class ArticleStub {
 
+	public const DEFAULT_CONTENT = '<p style="color:red">Hello <script>alert(1)</script></p><div data-sycomponent="Unknown">slot</div><div data-sycomponent="Unknown">{SLOT}</div>';
+
 	public static $userId = 2;
+
+	public static $content = self::DEFAULT_CONTENT;
 
 	public $updated = [];
 
@@ -31,7 +35,7 @@ class ArticleStub {
 			'lang'           => $where['lang'] ?? 'fr',
 			'title'          => 'Article title',
 			'description'    => 'Article description',
-			'content'        => '<p style="color:red">Hello <script>alert(1)</script></p><div data-sycomponent="Unknown">slot</div><div data-sycomponent="Unknown">{SLOT}</div>',
+			'content'        => self::$content,
 			'status'         => 'public',
 			'user_id'        => self::$userId,
 			'user_firstname' => 'Jane',

@@ -116,12 +116,16 @@ class Article extends \Sy\Bootstrap\Component\Api {
 				'content' => $content,
 			]);
 		} catch (\Sy\Db\MySql\Exception $e) {
-			error_log(sprintf(
+			$message = sprintf(
 				'[bootstrap-article] save failed for article %s/%s: %s',
 				(string) $this->post('id'),
 				(string) $this->post('lang'),
 				$e->getMessage()
-			));
+			);
+			error_log($message);
+			if (defined('LANG_DIR')) {
+				@file_put_contents(dirname(LANG_DIR) . '/log/article-db-error.log', date('c') . ' ' . $message . PHP_EOL, FILE_APPEND);
+			}
 			return $this->serverError([
 				'status' => 'ko',
 				'message' => $this->_('Database error'),

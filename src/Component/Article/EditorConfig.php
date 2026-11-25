@@ -31,6 +31,9 @@ class EditorConfig {
 	 * @return array
 	 */
 	public static function build($id, $lang, $csrf, $content, $editable, array $urls, array $assets, array $componentAllowlist = []) {
+		$extraPlugins = ['sourcedialog', 'tableresize', 'uploadimage', 'uploadfile'];
+		if ($componentAllowlist !== []) $extraPlugins[] = 'sycomponent';
+
 		return [
 			'element-id' => 'article-content',
 			'mode'       => 'inline',
@@ -61,7 +64,7 @@ class EditorConfig {
 			'templates-files' => [
 				$assets['ckeditorRoot'] . '/templates/article/js/' . $lang . '.js',
 			],
-			'extra-plugins'  => ['sourcedialog', 'tableresize', 'uploadimage', 'uploadfile'],
+			'extra-plugins'  => $extraPlugins,
 			'remove-plugins' => ['about', 'exportpdf', 'bidi', 'font', 'forms', 'language', 'pagebreak', 'newpage', 'wsc', 'scayt', 'flash', 'smiley'],
 			'components'     => [
 				'enabled'   => $componentAllowlist !== [],

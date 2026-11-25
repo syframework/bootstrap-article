@@ -55,6 +55,7 @@ class ArticleEditorConfigTest extends TestCase {
 		$this->assertSame('/assets/js/wysiwyg.js', $options['assets']['engine']);
 		$this->assertSame(EditorConfig::ALLOWED_CONTENT, $options['allowed-content']);
 		$this->assertSame('/assets/ckeditor/templates/article/js/fr.js', $options['templates-files'][0]);
+		$this->assertNotContains('sycomponent', $options['extra-plugins']);
 		$this->assertTrue($options['editable']);
 		$this->assertFalse($options['components']['enabled']);
 		$this->assertSame([], $options['components']['allowlist']);
@@ -86,6 +87,7 @@ class ArticleEditorConfigTest extends TestCase {
 		);
 
 		$this->assertTrue($options['components']['enabled']);
+		$this->assertContains('sycomponent', $options['extra-plugins']);
 		$this->assertSame(['Project\\Component\\Article\\Map'], $options['components']['allowlist']);
 	}
 

@@ -67,8 +67,14 @@
 	document.addEventListener('wysiwyg:stopped', function (event) {
 		if (event.detail.elementId !== elementId) return;
 
-		// A retryable save failure keeps the editor open; otherwise the engine
-		// has destroyed it and the start button is the only valid action.
+		// The source slots are saved, not the rendered components: reload so
+		// ComponentRenderer rebuilds the components from the server.
+		if (event.detail.saved) {
+			location.reload();
+			return;
+		}
+
+		// A retryable save failure keeps the editor open.
 		if (!event.detail.saved && event.detail.dirty) {
 			showStop();
 			return;

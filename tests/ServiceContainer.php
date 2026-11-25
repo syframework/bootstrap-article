@@ -5,8 +5,14 @@ class UserStub {
 
 	public $id = 1;
 
+	public $language = 'fr';
+
 	public function getCurrentUser() {
 		return $this;
+	}
+
+	public function isConnected() {
+		return true;
 	}
 
 	public function hasPermission($permission) {

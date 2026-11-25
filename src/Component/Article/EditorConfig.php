@@ -28,9 +28,10 @@ class EditorConfig {
 	 * @param array      $urls               load, save, image_browse, image_upload, file_browse, file_upload, component_render
 	 * @param array      $assets             engine, ckeditorJs, ckeditorRoot, plugins
 	 * @param array      $componentAllowlist Components the project authorizes
+	 * @param string|null $uiLang            CKEditor UI language (defaults to the article language)
 	 * @return array
 	 */
-	public static function build($id, $lang, $csrf, $content, $editable, array $urls, array $assets, array $componentAllowlist = []) {
+	public static function build($id, $lang, $csrf, $content, $editable, array $urls, array $assets, array $componentAllowlist = [], $uiLang = null) {
 		$extraPlugins = ['sourcedialog', 'tableresize', 'uploadimage', 'uploadfile'];
 		$insertItems  = ['Image', 'Table', 'HorizontalRule', 'SpecialChar', 'Iframe'];
 		if ($componentAllowlist !== []) {
@@ -76,7 +77,10 @@ class EditorConfig {
 				'render-url' => $urls['component_render'] ?? null,
 			],
 			'config'         => [
-				'toolbar' => [
+				// The editor UI follows the user preference, not the article
+				// language: an English article can be edited by a French user.
+				'language' => $uiLang ?: $lang,
+				'toolbar'  => [
 					['name' => 'document', 'items' => ['Sourcedialog', '-', 'Save', '-', 'Templates']],
 					['name' => 'clipboard', 'items' => ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo']],
 					['name' => 'basicstyles', 'items' => ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'CopyFormatting', 'RemoveFormat']],

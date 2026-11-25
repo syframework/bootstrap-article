@@ -132,6 +132,13 @@ class Content extends \Sy\Component\WebComponent {
 
 		$canEdit = $user->hasPermission('article-update') or (int) $user->id === (int) $article['user_id'];
 
+		// The CKEditor UI follows the connected user preference; anonymous
+		// visitors fall back to the display language (URL, then browser).
+		$uiLang = $service->lang->getLang();
+		if ($user->isConnected() and $service->lang->isAvailable($user->language)) {
+			$uiLang = $user->language;
+		}
+
 		$editorOptions = EditorConfig::build(
 			$this->id,
 			$this->lang,
@@ -153,7 +160,8 @@ class Content extends \Sy\Component\WebComponent {
 				'ckeditorRoot'  => EditorAssets::root(),
 				'plugins'       => EditorAssets::plugins(),
 			],
-			$componentAllowlist
+			$componentAllowlist,
+			$uiLang
 		);
 		$this->setComponent('WYSIWYG_EDITOR', new Editor($editorOptions));
 

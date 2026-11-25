@@ -62,7 +62,39 @@ class ArticleEditorConfigTest extends TestCase {
 		$this->assertFalse($options['components']['enabled']);
 		$this->assertSame([], $options['components']['allowlist']);
 		$this->assertSame('/editor/article/render', $options['components']['render-url']);
+		$this->assertSame('fr', $options['config']['language']);
 		$this->assertArrayNotHasKey('CKEDITOR', $options);
+	}
+
+	public function testUiLanguageIsSeparateFromTheArticleLanguage() {
+		$options = EditorConfig::build(
+			42,
+			'en',
+			'csrf',
+			'<p>safe</p>',
+			true,
+			[
+				'load'             => '/api/article',
+				'save'             => '/api/article',
+				'image_browse'     => '/editor/article/browse',
+				'image_upload'     => '/editor/article/upload',
+				'file_browse'      => '/editor/article/browse',
+				'file_upload'      => '/editor/article/upload',
+				'component_render' => '/editor/article/render',
+			],
+			[
+				'engine'       => '/assets/js/wysiwyg.js',
+				'ckeditorJs'   => '/ckeditor.js',
+				'ckeditorRoot' => '/assets/ckeditor',
+				'plugins'      => '/assets/js/plugins',
+			],
+			[],
+			'fr'
+		);
+
+		$this->assertSame('fr', $options['config']['language']);
+		$this->assertSame(['id' => 42, 'lang' => 'en'], $options['save-data']);
+		$this->assertSame('/assets/ckeditor/templates/article/js/en.js', $options['templates-files'][0]);
 	}
 
 	public function testComponentsAreEnabledWhenTheProjectAllowsThem() {

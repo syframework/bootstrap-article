@@ -25,7 +25,7 @@ class EditorConfig {
 	 * @param string     $csrf
 	 * @param string     $content Sanitized initial HTML
 	 * @param bool       $editable
-	 * @param array      $urls               load, save, image_browse, image_upload, file_browse, file_upload
+	 * @param array      $urls               load, save, image_browse, image_upload, file_browse, file_upload, component_render
 	 * @param array      $assets             engine, ckeditorJs, ckeditorRoot, plugins
 	 * @param array      $componentAllowlist Components the project authorizes
 	 * @return array
@@ -71,8 +71,9 @@ class EditorConfig {
 			'extra-plugins'  => $extraPlugins,
 			'remove-plugins' => ['about', 'exportpdf', 'bidi', 'font', 'forms', 'language', 'pagebreak', 'newpage', 'wsc', 'scayt', 'flash', 'smiley'],
 			'components'     => [
-				'enabled'   => $componentAllowlist !== [],
-				'allowlist' => $componentAllowlist,
+				'enabled'    => $componentAllowlist !== [],
+				'allowlist'  => $componentAllowlist,
+				'render-url' => $urls['component_render'] ?? null,
 			],
 			'config'         => [
 				'toolbar' => [

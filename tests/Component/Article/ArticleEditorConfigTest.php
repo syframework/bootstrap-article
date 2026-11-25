@@ -34,12 +34,13 @@ class ArticleEditorConfigTest extends TestCase {
 			'<p>safe</p>',
 			true,
 			[
-				'load'         => '/api/article',
-				'save'         => '/api/article',
-				'image_browse' => '/editor/article/browse',
-				'image_upload' => '/editor/article/upload',
-				'file_browse'  => '/editor/article/browse',
-				'file_upload'  => '/editor/article/upload',
+				'load'             => '/api/article',
+				'save'             => '/api/article',
+				'image_browse'     => '/editor/article/browse',
+				'image_upload'     => '/editor/article/upload',
+				'file_browse'      => '/editor/article/browse',
+				'file_upload'      => '/editor/article/upload',
+				'component_render' => '/editor/article/render',
 			],
 			[
 				'engine'        => '/assets/js/wysiwyg.js',
@@ -60,6 +61,7 @@ class ArticleEditorConfigTest extends TestCase {
 		$this->assertTrue($options['editable']);
 		$this->assertFalse($options['components']['enabled']);
 		$this->assertSame([], $options['components']['allowlist']);
+		$this->assertSame('/editor/article/render', $options['components']['render-url']);
 		$this->assertArrayNotHasKey('CKEDITOR', $options);
 	}
 
@@ -71,12 +73,13 @@ class ArticleEditorConfigTest extends TestCase {
 			'<p>safe</p>',
 			true,
 			[
-				'load'         => '/api/article',
-				'save'         => '/api/article',
-				'image_browse' => '/editor/article/browse',
-				'image_upload' => '/editor/article/upload',
-				'file_browse'  => '/editor/article/browse',
-				'file_upload'  => '/editor/article/upload',
+				'load'             => '/api/article',
+				'save'             => '/api/article',
+				'image_browse'     => '/editor/article/browse',
+				'image_upload'     => '/editor/article/upload',
+				'file_browse'      => '/editor/article/browse',
+				'file_upload'      => '/editor/article/upload',
+				'component_render' => '/editor/article/render',
 			],
 			[
 				'engine'        => '/assets/js/wysiwyg.js',
@@ -91,6 +94,7 @@ class ArticleEditorConfigTest extends TestCase {
 		$this->assertContains('sycomponent', $options['extra-plugins']);
 		$this->assertContains('Sycomponent', $this->toolbarItems($options, 'insert'));
 		$this->assertSame(['Project\\Component\\Article\\Map'], $options['components']['allowlist']);
+		$this->assertSame('/editor/article/render', $options['components']['render-url']);
 	}
 
 	private function toolbarItems(array $options, $group) {

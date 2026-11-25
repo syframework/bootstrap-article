@@ -12,6 +12,7 @@ class ArticleEditorPluginTest extends TestCase {
 			\Sy\Bootstrap\Application\Editor\CkFile::class,
 			$reflection->getTraitNames()
 		);
+		$this->assertTrue($reflection->hasMethod('renderAction'));
 	}
 
 }

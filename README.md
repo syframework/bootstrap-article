@@ -34,7 +34,8 @@ The package ships its translations in `lang/bootstrap-article`. Add them to the 
 
 ```php
 	protected function preInit() {
-		$this->addTranslator(__DIR__ . '/../../vendor/sy/bootstrap-article/lang/bootstrap-article');
+		$articleLangDir = __DIR__ . '/../../vendor/sy/bootstrap-article/lang/bootstrap-article';
+		if (is_dir($articleLangDir)) $this->addTranslator($articleLangDir);
 		// ... existing head data
 	}
 ```

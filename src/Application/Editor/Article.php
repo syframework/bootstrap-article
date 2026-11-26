@@ -2,11 +2,11 @@
 namespace Sy\Bootstrap\Application\Editor;
 
 use Sy\Bootstrap\Lib\Image;
-use Sy\Bootstrap\Wysiwyg\Lib\ComponentFilter;
 
 class Article extends \Sy\Bootstrap\Component\Api {
 
 	use CkFile;
+	use Render;
 
 	public function security() {
 		$service = \Project\Service\Container::getInstance();
@@ -25,11 +25,27 @@ class Article extends \Sy\Bootstrap\Component\Api {
 	/**
 	 * Language of the article being edited.
 	 *
-	 * The render URL carries it so the preview uses the same translations as
-	 * the page, even when the editor UI follows another user preference.
+	 * The render URL carries it (`?lang=`) so the preview uses the same
+	 * translations as the page, even when the editor UI follows another user
+	 * preference.
 	 *
 	 * @return string
 	 */
+	protected function renderLanguage(): string {
+		return $this->language();
+	}
+
+	/**
+	 * Article labels come from the page translator and the package one, both in
+	 * the article language.
+	 *
+	 * @param string $lang
+	 * @return string[]
+	 */
+	protected function renderTranslators(string $lang): array {
+		return [LANG_DIR, __DIR__ . '/../../../lang/bootstrap-article'];
+	}
+
 	private function language() {
 		$service = \Project\Service\Container::getInstance();
 		$lang    = $this->request('lang');
@@ -48,48 +64,6 @@ class Article extends \Sy\Bootstrap\Component\Api {
 		}
 
 		return $this->uploadResponse($result);
-	}
-
-	/**
-	 * Render one allowlisted component for the editor preview.
-	 *
-	 * The editor sends the component class and the JSON arguments; the
-	 * response contains the rendered component HTML, never the source slot.
-	 */
-	public function renderAction() {
-		$component = $this->post('component');
-		$args      = $this->post('args');
-		$class     = ltrim(trim((string) $component), '\\');
-		$allowlist = ComponentFilter::allowlist('article');
-
-		if ($class === '' or !in_array($class, $allowlist, true) or !class_exists($class)) {
-			return $this->requestError(['message' => 'Component not allowed']);
-		}
-
-		$decoded = [];
-		if (is_string($args) and trim($args) !== '') {
-			$decoded = json_decode($args, true);
-			if (!is_array($decoded)) {
-				return $this->requestError(['message' => 'Invalid component arguments']);
-			}
-		}
-
-		$lang = $this->language();
-		$this->addTranslator(LANG_DIR, 'php', $lang);
-		$this->addTranslator(__DIR__ . '/../../../lang/bootstrap-article', 'php', $lang);
-
-		try {
-			$instance = new $class(...$decoded);
-			if ($instance instanceof \Sy\Component\WebComponent) {
-				$instance->addTranslators($this->getTranslators());
-			}
-			$html = (string) $instance;
-		} catch (\Throwable $e) {
-			$this->logWarning($e);
-			return $this->requestError(['message' => 'Component render failed']);
-		}
-
-		return $this->ok(['status' => 'ok', 'html' => $html]);
 	}
 
 	/**

@@ -144,3 +144,26 @@ class Application extends \Sy\Bootstrap\Application {
 Converters are evaluated in registration order. `ArticleConverter` must be registered **before** `ControllerActionConverter`, which is the terminal fallback; its position relative to `AliasConverter` depends on whether aliases should take precedence over article URLs. With this configuration, an article is reachable as `/a/<alias>` and is mapped to `p=page`, `a=article`, `id=<id>` and `lang=<article language>`.
 
 Article URLs have no language segment: `ArticleConverter` sets the current language from the article, so the page is rendered in the article language. See the [URL Converters](https://github.com/syframework/bootstrap/wiki/URL-Converters) wiki page for the full converter contract, ordering rules and `Url::build()` examples.
+
+## Add the articles sitemap in Sitemap.php
+
+In ```protected/src/Application/Sitemap.php```
+
+```php
+<?php
+namespace Project\Application;
+
+class Sitemap extends \Sy\Bootstrap\Application\Sitemap {
+
+	public function __construct() {
+		parent::__construct();
+		$this->addProvider(new \Sy\Bootstrap\Application\Sitemap\Page());
+		$this->addProvider(new \Sy\Bootstrap\Application\Sitemap\Article()); // Add the articles sitemap
+	}
+
+}
+```
+
+`Article` adds one entry to the sitemap index (`<project>/sitemap/article`) and lists every `public` article, one entry per language: `<loc>` is the article URL (`/a/<alias>`), `<lastmod>` is its `updated_at` date, and `<alternate>` lists every translation of the same article (the join is not filtered on the translation status).
+
+The provider must be registered: `Sitemap` resolves the requested action to `Project\Application\Sitemap\<Action>` then `Sy\Bootstrap\Application\Sitemap\<Action>`, and answers 404 when no provider class matches the action or when that class was never added with `addProvider()`. An unregistered Article sitemap is therefore a 404, not an empty file; leaving it out of `Sitemap.php` also keeps the article URLs out of the sitemap index.

@@ -15,11 +15,26 @@ class Article extends \Sy\Bootstrap\Component\Api {
 			throw new \Sy\Bootstrap\Component\Api\RequestErrorException('Missing article id parameter');
 		}
 
-		$article = $service->article->retrieve(['id' => $this->request('id'), 'lang' => LANG]);
+		$article = $service->article->retrieve(['id' => $this->request('id'), 'lang' => $this->language()]);
 
 		if (!$user->hasPermission('article-update') and (int) $user->id !== (int) ($article['user_id'] ?? 0)) {
 			throw new \Sy\Bootstrap\Component\Api\ForbiddenException('Permission denied');
 		}
+	}
+
+	/**
+	 * Language of the article being edited.
+	 *
+	 * The render URL carries it so the preview uses the same translations as
+	 * the page, even when the editor UI follows another user preference.
+	 *
+	 * @return string
+	 */
+	private function language() {
+		$service = \Project\Service\Container::getInstance();
+		$lang    = $this->request('lang');
+		if (is_string($lang) and $service->lang->isAvailable($lang)) return $lang;
+		return $service->lang->getLang();
 	}
 
 	/**
@@ -59,9 +74,16 @@ class Article extends \Sy\Bootstrap\Component\Api {
 			}
 		}
 
+		$lang = $this->language();
+		$this->addTranslator(LANG_DIR, 'php', $lang);
+		$this->addTranslator(__DIR__ . '/../../../lang/bootstrap-article', 'php', $lang);
+
 		try {
 			$instance = new $class(...$decoded);
-			$html     = (string) $instance;
+			if ($instance instanceof \Sy\Component\WebComponent) {
+				$instance->addTranslators($this->getTranslators());
+			}
+			$html = (string) $instance;
 		} catch (\Throwable $e) {
 			$this->logWarning($e);
 			return $this->requestError(['message' => 'Component render failed']);

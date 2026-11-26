@@ -152,7 +152,7 @@ class Content extends \Sy\Component\WebComponent {
 				'image_upload'     => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'image']),
 				'file_browse'      => Url::build('editor', 'article/browse', ['id' => $this->id, 'type' => 'file']),
 				'file_upload'      => Url::build('editor', 'article/upload', ['id' => $this->id, 'type' => 'file']),
-				'component_render' => Url::build('editor', 'article/render', ['id' => $this->id]),
+				'component_render' => Url::build('editor', 'article/render', ['id' => $this->id, 'lang' => $this->lang]),
 			],
 			[
 				'engine'        => EditorAssets::engine(),

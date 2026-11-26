@@ -16,7 +16,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 
 		$article = $service->article->retrieve(['id' => $this->request('id'), 'lang' => $this->request('lang')]);
 
-		if (!$user->hasPermission('article-update') and $user->id !== $article['user_id']) {
+		if (!$user->hasPermission('article-update') and (int) $user->id !== (int) ($article['user_id'] ?? 0)) {
 			throw new \Sy\Bootstrap\Component\Api\ForbiddenException('Permission denied');
 		}
 	}
@@ -50,7 +50,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 					ComponentFilter::allowlist('article')
 				),
 			]);
-		} catch (\Sy\Db\MySql\Exception $e) {
+		} catch (\Sy\Db\MySql\Exception) {
 			return $this->serverError([
 				'status'  => 'ko',
 				'message' => $this->_('Database error'),
@@ -125,19 +125,9 @@ class Article extends \Sy\Bootstrap\Component\Api {
 				'status'  => 'ok',
 				'content' => $content,
 			]);
-		} catch (\Sy\Db\MySql\Exception $e) {
-			$message = sprintf(
-				'[bootstrap-article] save failed for article %s/%s: %s',
-				(string) $this->post('id'),
-				(string) $this->post('lang'),
-				$e->getMessage()
-			);
-			error_log($message);
-			if (defined('LANG_DIR')) {
-				@file_put_contents(dirname(LANG_DIR) . '/log/article-db-error.log', date('c') . ' ' . $message . PHP_EOL, FILE_APPEND);
-			}
+		} catch (\Sy\Db\MySql\Exception) {
 			return $this->serverError([
-				'status' => 'ko',
+				'status'  => 'ko',
 				'message' => $this->_('Database error'),
 			]);
 		}

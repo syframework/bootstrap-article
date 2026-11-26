@@ -101,7 +101,7 @@ class Content extends \Sy\Component\WebComponent {
 		$user = $service->user->getCurrentUser();
 		// Check read permission
 		if ($article['status'] === 'draft') {
-			if ($user->id !== $article['user_id'] and !$user->hasPermission('article-read')) {
+			if ((int) $user->id !== (int) $article['user_id'] and !$user->hasPermission('article-read')) {
 				throw new \Sy\Bootstrap\Application\Page\NotFoundException();
 			}
 		}

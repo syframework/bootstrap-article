@@ -17,7 +17,7 @@ class Article extends \Sy\Bootstrap\Component\Api {
 
 		$article = $service->article->retrieve(['id' => $this->request('id'), 'lang' => LANG]);
 
-		if (!$user->hasPermission('article-update') and $user->id !== $article['user_id']) {
+		if (!$user->hasPermission('article-update') and (int) $user->id !== (int) ($article['user_id'] ?? 0)) {
 			throw new \Sy\Bootstrap\Component\Api\ForbiddenException('Permission denied');
 		}
 	}

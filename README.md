@@ -40,6 +40,17 @@ Import it in your ```app.scss``` file and rebuild the css file.
 
 ### 6. Copy assets files
 
+```bash
+cp -r vendor/sy/bootstrap-article/assets/ckeditor/templates/article <public>/assets/ckeditor/templates/
+```
+
+CKEditor templates are discovered through `assets.ckeditor-root` (by default
+`/assets/ckeditor`), so the `templates/article` directory must sit next to the
+CKEditor installation. The engine itself (`assets/js/wysiwyg.js`) and its
+plugins (`assets/js/plugins`) come from `sy/bootstrap-wysiwyg`: see its README,
+an application without the `sy/project 7.0.0` Composer hooks must copy them
+itself.
+
 ### 7. Run composer build
 
 ### 8. Run composer db migrate

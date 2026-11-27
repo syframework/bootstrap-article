@@ -7,7 +7,7 @@
 		"ext-json": "*",
 		"sy/webcomponent": "^2",
 		"sy/bootstrap": "^2.0",
-		"sy/bootstrap-wysiwyg": "^1.10"
+		"sy/bootstrap-wysiwyg": "^1.11"
 	},
 	"license": "MIT",
 	"authors": [

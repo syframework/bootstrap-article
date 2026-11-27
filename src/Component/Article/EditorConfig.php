@@ -76,6 +76,8 @@ class EditorConfig {
 				'allowlist'    => $componentAllowlist,
 				'render-url'   => $urls['component_render'] ?? null,
 				'metadata-url' => $urls['component_metadata'] ?? null,
+				// Opt-in: a project that wants failures to be visible.
+				'strict'       => defined('WYSIWYG_COMPONENT_STRICT') && WYSIWYG_COMPONENT_STRICT,
 			],
 			'config'         => [
 				// The editor UI follows the user preference, not the article

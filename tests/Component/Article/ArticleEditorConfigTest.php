@@ -64,6 +64,7 @@ class ArticleEditorConfigTest extends TestCase {
 		$this->assertSame([], $options['components']['allowlist']);
 		$this->assertSame('/editor/article/render', $options['components']['render-url']);
 		$this->assertSame('/editor/article/metadata', $options['components']['metadata-url']);
+		$this->assertFalse($options['components']['strict']);
 		$this->assertSame('fr', $options['config']['language']);
 		$this->assertArrayNotHasKey('CKEDITOR', $options);
 	}
@@ -132,6 +133,7 @@ class ArticleEditorConfigTest extends TestCase {
 		$this->assertSame(['Project\\Component\\Article\\Map'], $options['components']['allowlist']);
 		$this->assertSame('/editor/article/render', $options['components']['render-url']);
 		$this->assertSame('/editor/article/metadata', $options['components']['metadata-url']);
+		$this->assertFalse($options['components']['strict']);
 	}
 
 	private function toolbarItems(array $options, $group) {

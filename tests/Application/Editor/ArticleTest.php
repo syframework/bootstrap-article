@@ -6,7 +6,8 @@ use Sy\Bootstrap\Application\Editor\Article;
 
 /**
  * The article editor endpoints: browse/upload come from `CkFile`, the component
- * preview from the shared `Render` trait (wysiwyg 1.9).
+ * preview from the shared `Render` trait (wysiwyg 1.9) and the component
+ * catalogue from `Metadata` (wysiwyg 1.10).
  */
 class ArticleTest extends TestCase {
 
@@ -15,6 +16,16 @@ class ArticleTest extends TestCase {
 
 		$this->assertContains('Sy\Bootstrap\Application\Editor\CkFile', $reflection->getTraitNames());
 		$this->assertContains('Sy\Bootstrap\Application\Editor\Render', $reflection->getTraitNames());
+		$this->assertContains('Sy\Bootstrap\Application\Editor\Metadata', $reflection->getTraitNames());
+	}
+
+	public function testMetadataActionComesFromTheEngine() {
+		$file = (new \ReflectionMethod(Article::class, 'metadataAction'))->getFileName();
+
+		$this->assertStringEndsWith(
+			'Application/Editor/Metadata.php',
+			str_replace('\\', '/', $file)
+		);
 	}
 
 	public function testRenderActionComesFromTheEngine() {

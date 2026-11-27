@@ -25,7 +25,7 @@ class EditorConfig {
 	 * @param string     $csrf
 	 * @param string     $content Sanitized initial HTML
 	 * @param bool       $editable
-	 * @param array      $urls               load, save, image_browse, image_upload, file_browse, file_upload, component_render
+	 * @param array      $urls               load, save, image_browse, image_upload, file_browse, file_upload, component_render, component_metadata
 	 * @param array      $assets             engine, ckeditorJs, ckeditorRoot, plugins
 	 * @param array      $componentAllowlist Components the project authorizes
 	 * @param string|null $uiLang            CKEditor UI language (defaults to the article language)
@@ -72,9 +72,10 @@ class EditorConfig {
 			'extra-plugins'  => $extraPlugins,
 			'remove-plugins' => ['about', 'exportpdf', 'bidi', 'font', 'forms', 'language', 'pagebreak', 'newpage', 'wsc', 'scayt', 'flash', 'smiley'],
 			'components'     => [
-				'enabled'    => $componentAllowlist !== [],
-				'allowlist'  => $componentAllowlist,
-				'render-url' => $urls['component_render'] ?? null,
+				'enabled'      => $componentAllowlist !== [],
+				'allowlist'    => $componentAllowlist,
+				'render-url'   => $urls['component_render'] ?? null,
+				'metadata-url' => $urls['component_metadata'] ?? null,
 			],
 			'config'         => [
 				// The editor UI follows the user preference, not the article

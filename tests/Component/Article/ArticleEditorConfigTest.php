@@ -41,6 +41,7 @@ class ArticleEditorConfigTest extends TestCase {
 				'file_browse'      => '/editor/article/browse',
 				'file_upload'      => '/editor/article/upload',
 				'component_render' => '/editor/article/render',
+				'component_metadata' => '/editor/article/metadata',
 			],
 			[
 				'engine'        => '/assets/js/wysiwyg.js',
@@ -62,6 +63,7 @@ class ArticleEditorConfigTest extends TestCase {
 		$this->assertFalse($options['components']['enabled']);
 		$this->assertSame([], $options['components']['allowlist']);
 		$this->assertSame('/editor/article/render', $options['components']['render-url']);
+		$this->assertSame('/editor/article/metadata', $options['components']['metadata-url']);
 		$this->assertSame('fr', $options['config']['language']);
 		$this->assertArrayNotHasKey('CKEDITOR', $options);
 	}
@@ -81,6 +83,7 @@ class ArticleEditorConfigTest extends TestCase {
 				'file_browse'      => '/editor/article/browse',
 				'file_upload'      => '/editor/article/upload',
 				'component_render' => '/editor/article/render',
+				'component_metadata' => '/editor/article/metadata',
 			],
 			[
 				'engine'       => '/assets/js/wysiwyg.js',
@@ -112,6 +115,7 @@ class ArticleEditorConfigTest extends TestCase {
 				'file_browse'      => '/editor/article/browse',
 				'file_upload'      => '/editor/article/upload',
 				'component_render' => '/editor/article/render',
+				'component_metadata' => '/editor/article/metadata',
 			],
 			[
 				'engine'        => '/assets/js/wysiwyg.js',
@@ -127,6 +131,7 @@ class ArticleEditorConfigTest extends TestCase {
 		$this->assertContains('Sycomponent', $this->toolbarItems($options, 'insert'));
 		$this->assertSame(['Project\\Component\\Article\\Map'], $options['components']['allowlist']);
 		$this->assertSame('/editor/article/render', $options['components']['render-url']);
+		$this->assertSame('/editor/article/metadata', $options['components']['metadata-url']);
 	}
 
 	private function toolbarItems(array $options, $group) {
